@@ -1,0 +1,33 @@
+{
+  "name": "grunt-banana-checker",
+  "version": "0.1.0",
+  "description": "A grunt checker for the \"banana\" JSON i18n system provided by MediaWiki and jquery.i18n",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jdforrester/grunt-banana-checker.git"
+  },
+  "keywords": [
+    "gruntplugin",
+    "checker"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/jdforrester/grunt-banana-checker/master/LICENSE"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/jdforrester/grunt-banana-checker/issues"
+  },
+  "homepage": "https://github.com/jdforrester/grunt-banana-checker",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "0.4.2",
+    "grunt-contrib-jshint": "0.8.0",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-jscs-checker": "0.4.1"
+  }
+}
