@@ -1,5 +1,5 @@
 /*!
- * Check for missing documentation for banana messages
+ * A grunt checker for the 'banana' format JSON i18n message files.
  */
 
 /*jshint node:true */
