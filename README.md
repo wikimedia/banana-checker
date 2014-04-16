@@ -9,3 +9,4 @@ Checks run:
     - (Note that no parsing is done of the metadata objects.)
 * Each defined source message has a matching defined documentation message.
     - (Note that no parsing is done of the message definitions or their documentation, including if they are simply the blank string "".)
+* Each defined documentation message has a matching defined source message.

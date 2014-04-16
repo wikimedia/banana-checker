@@ -16,11 +16,14 @@ module.exports = function ( grunt ) {
 		this.filesSrc.forEach( function ( dir ) {
 			var documentationMessagesMetadataIndex,
 				sourceMessagesMetadataIndex,
+				message,
+				documentationIndex,
 				documentationMessages = grunt.file.readJSON( path.resolve( dir, options.documentationFile ) ),
 				documentationMessageKeys = Object.keys( documentationMessages ),
 				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) ),
 				sourceMessageKeys = Object.keys( sourceMessages ),
-				failedMessageCount = 0;
+				sourceIndex = 0,
+				count = 0;
 
 			messageCount += sourceMessageKeys.length;
 
@@ -40,19 +43,40 @@ module.exports = function ( grunt ) {
 			}
 			documentationMessageKeys.splice( documentationMessagesMetadataIndex, 1 );
 
-			sourceMessageKeys.forEach( function ( msgKey ) {
-				if ( documentationMessageKeys.indexOf( msgKey ) === -1 ) {
-					grunt.log.error( 'Message "' + msgKey + '" lacks documentation.' );
-					failedMessageCount++;
-				}
-			} );
+			while (sourceMessageKeys.length > 0) {
+				message = sourceMessageKeys[0];
+				documentationIndex = documentationMessageKeys.indexOf( message );
 
-			if ( failedMessageCount > 0 ) {
-				grunt.log.error(
-					failedMessageCount + ' message' + ( failedMessageCount > 1 ? 's lack' : ' lacks' ) +
-						' documentation.'
-				);
+				if ( documentationIndex !== -1 ) {
+					documentationMessageKeys.splice( documentationIndex, 1 );
+				}
+				sourceMessageKeys.splice( sourceIndex, 1 );
+			}
+
+			count = sourceMessageKeys.length;
+			if ( count > 0 ) {
 				ok = false;
+
+				grunt.log.error(
+					count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation.'
+				);
+
+				sourceMessageKeys.forEach( function ( message ) {
+					grunt.log.error( 'Message "' + message + '" lacks documentation.' );
+				} );
+			}
+
+			count = documentationMessageKeys.length;
+			if ( count > 0 ) {
+				ok = false;
+
+				grunt.log.error(
+					count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' undefined.'
+				);
+
+				documentationMessageKeys.forEach( function ( message ) {
+					grunt.log.error( 'Message "' + message + '" is documented but undefined.' );
+				} );
 			}
 		} );
 
