@@ -14,7 +14,7 @@ module.exports = function ( grunt ) {
 		jshint: {
 			options: JSON.parse( grunt.file.read( '.jshintrc' )
 				.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\//g, '' ).replace( /\/\/[^\n\r]*/g, '' ) ),
-			all: ['*.js', '{tasks,test}/**/*.js']
+			all: [ '*.js', '{tasks,test}/**/*.js' ]
 		},
 		jscs: {
 			src: '<%= jshint.all %>'
@@ -37,11 +37,11 @@ module.exports = function ( grunt ) {
 			}
 		},
 		watch: {
-			files: ['<%= jshint.all %>', '.{jshintrc,jshintignore}'],
-			tasks: ['test']
+			files: [ '<%= jshint.all %>', '.{jshintrc,jshintignore}' ],
+			tasks: [ 'test' ]
 		}
 	} );
 
-	grunt.registerTask( 'test', ['jshint', 'jscs', 'banana'] );
+	grunt.registerTask( 'test', [ 'jshint', 'jscs', 'banana' ] );
 	grunt.registerTask( 'default', 'test' );
 };
