@@ -1,4 +1,4 @@
-[![NPM version](https://badge.fury.io/js/grunt-banana-checker.svg)](http://badge.fury.io/js/grunt-banana-checker) [![Build Status](https://travis-ci.org/jdforrester/grunt-banana-checker.svg?branch=master)](https://travis-ci.org/jdforrester/grunt-banana-checker)
+[![NPM version](https://badge.fury.io/js/grunt-banana-checker.svg)](http://badge.fury.io/js/grunt-banana-checker) [![Build Status](https://travis-ci.org/wikimedia/grunt-banana-checker.svg?branch=master)](https://travis-ci.org/wikimedia/grunt-banana-checker)
 grunt-banana-checker
 ====================
 
