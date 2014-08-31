@@ -6,4 +6,4 @@ before_install:
 notifications:
   irc:
     channels:
-      - "chat.freenode.net#mediawiki-i18n"
+      - "chat.freenode.net#mediawiki-visualeditor"
