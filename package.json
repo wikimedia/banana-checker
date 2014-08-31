@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jdforrester/grunt-banana-checker.git"
+    "url": "git://github.com/wikimedia/grunt-banana-checker.git"
   },
   "keywords": [
     "gruntplugin",
@@ -16,13 +16,13 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.github.com/jdforrester/grunt-banana-checker/master/LICENSE"
+      "url": "https://raw.github.com/wikimedia/grunt-banana-checker/master/LICENSE"
     }
   ],
   "bugs": {
-    "url": "https://github.com/jdforrester/grunt-banana-checker/issues"
+    "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
   },
-  "homepage": "https://github.com/jdforrester/grunt-banana-checker",
+  "homepage": "https://github.com/wikimedia/grunt-banana-checker",
   "dependencies": {},
   "devDependencies": {
     "grunt": "0.4.5",
