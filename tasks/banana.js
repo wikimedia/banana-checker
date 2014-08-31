@@ -20,6 +20,7 @@ module.exports = function ( grunt ) {
 				documentationIndex,
 				documentationMessages = grunt.file.readJSON( path.resolve( dir, options.documentationFile ) ),
 				documentationMessageKeys = Object.keys( documentationMessages ),
+				documentationMessageBlanks = [],
 				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) ),
 				sourceMessageKeys = Object.keys( sourceMessages ),
 				sourceIndex = 0,
@@ -48,6 +49,11 @@ module.exports = function ( grunt ) {
 				documentationIndex = documentationMessageKeys.indexOf( message );
 
 				if ( documentationIndex !== -1 ) {
+
+					if ( documentationMessages[message].trim() === '' ) {
+						documentationMessageBlanks.push( message );
+					}
+
 					documentationMessageKeys.splice( documentationIndex, 1 );
 				}
 				sourceMessageKeys.splice( sourceIndex, 1 );
@@ -63,6 +69,19 @@ module.exports = function ( grunt ) {
 
 				sourceMessageKeys.forEach( function ( message ) {
 					grunt.log.error( 'Message "' + message + '" lacks documentation.' );
+				} );
+			}
+
+			count = documentationMessageBlanks.length;
+			if ( count > 0 ) {
+				ok = false;
+
+				grunt.log.error(
+					count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' blank.'
+				);
+
+				documentationMessageBlanks.forEach( function ( message ) {
+					grunt.log.error( 'Message "' + message + '" is documented with a blank string.' );
 				} );
 			}
 
