@@ -24,7 +24,6 @@ module.exports = function ( grunt ) {
 				sourceMessageMissing = [],
 				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) ),
 				sourceMessageKeys = Object.keys( sourceMessages ),
-				sourceIndex = 0,
 				count = 0;
 
 			messageCount += sourceMessageKeys.length;
@@ -59,7 +58,7 @@ module.exports = function ( grunt ) {
 				} else {
 					sourceMessageMissing.push( message );
 				}
-				sourceMessageKeys.splice( sourceIndex, 1 );
+				sourceMessageKeys.splice( 0, 1 );
 			}
 
 			count = sourceMessageMissing.length;
