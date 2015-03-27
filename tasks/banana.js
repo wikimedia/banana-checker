@@ -21,9 +21,9 @@ module.exports = function ( grunt ) {
 				documentationMessages = grunt.file.readJSON( path.resolve( dir, options.documentationFile ) ),
 				documentationMessageKeys = Object.keys( documentationMessages ),
 				documentationMessageBlanks = [],
+				sourceMessageMissing = [],
 				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) ),
 				sourceMessageKeys = Object.keys( sourceMessages ),
-				sourceIndex = 0,
 				count = 0;
 
 			messageCount += sourceMessageKeys.length;
@@ -44,7 +44,7 @@ module.exports = function ( grunt ) {
 			}
 			documentationMessageKeys.splice( documentationMessagesMetadataIndex, 1 );
 
-			while (sourceMessageKeys.length > 0) {
+			while ( sourceMessageKeys.length > 0 ) {
 				message = sourceMessageKeys[0];
 				documentationIndex = documentationMessageKeys.indexOf( message );
 
@@ -55,11 +55,13 @@ module.exports = function ( grunt ) {
 					}
 
 					documentationMessageKeys.splice( documentationIndex, 1 );
+				} else {
+					sourceMessageMissing.push( message );
 				}
-				sourceMessageKeys.splice( sourceIndex, 1 );
+				sourceMessageKeys.splice( 0, 1 );
 			}
 
-			count = sourceMessageKeys.length;
+			count = sourceMessageMissing.length;
 			if ( count > 0 ) {
 				ok = false;
 
@@ -67,7 +69,7 @@ module.exports = function ( grunt ) {
 					count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation.'
 				);
 
-				sourceMessageKeys.forEach( function ( message ) {
+				sourceMessageMissing.forEach( function ( message ) {
 					grunt.log.error( 'Message "' + message + '" lacks documentation.' );
 				} );
 			}
@@ -103,6 +105,6 @@ module.exports = function ( grunt ) {
 			return false;
 		}
 
-		grunt.log.ok( messageCount + ' message' + ( messageCount > 1 ? 's' : '') + ' checked.' );
+		grunt.log.ok( messageCount + ' message' + ( messageCount > 1 ? 's' : '' ) + ' checked.' );
 	} );
 };
