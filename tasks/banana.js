@@ -44,7 +44,7 @@ module.exports = function ( grunt ) {
 			}
 			documentationMessageKeys.splice( documentationMessagesMetadataIndex, 1 );
 
-			while (sourceMessageKeys.length > 0) {
+			while ( sourceMessageKeys.length > 0 ) {
 				message = sourceMessageKeys[0];
 				documentationIndex = documentationMessageKeys.indexOf( message );
 
@@ -103,6 +103,6 @@ module.exports = function ( grunt ) {
 			return false;
 		}
 
-		grunt.log.ok( messageCount + ' message' + ( messageCount > 1 ? 's' : '') + ' checked.' );
+		grunt.log.ok( messageCount + ' message' + ( messageCount > 1 ? 's' : '' ) + ' checked.' );
 	} );
 };
