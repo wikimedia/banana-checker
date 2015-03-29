@@ -7,7 +7,7 @@ grunt-banana-checker
 Getting started
 --------------------
 
-If this is the first time you've used [grunt](http://gruntjs.com/), the [getting started guide](http://gruntjs.com/getting-started) will show you how to get up and running.
+If this is the first time you're using [Grunt](http://gruntjs.com/), the [getting started guide](http://gruntjs.com/getting-started) will show you how to get up and running.
 
 Once you have that installed, with a [Gruntfile](http://gruntjs.com/sample-gruntfile) set for your code, you can install the plugin with:
 
@@ -26,13 +26,13 @@ Running and configuring
 
 _Run this task with the `grunt banana` command._
 
-This is designed to be very simple and not need configuring for the most common case.
+This is designed to be very simple and not need configuring for the most common cases.
 
-You can specify the targets and options for the task using the normal grunt configuration – see grunt's [guide on how to configure tasks](http://gruntjs.com/configuring-tasks) in general
+You can specify the targets and options for the task using the normal Grunt configuration – see Grunt's [guide on how to configure tasks](http://gruntjs.com/configuring-tasks) in general.
 
 ### Options
 
-For edge cases you can set some path options:
+For edge cases, you can set some path options:
 
 ### sourceFile
 Type: `string`
@@ -79,8 +79,8 @@ Checks run
 ----------
 
 * The source and documentation files both exist, and are both valid JSON.
-* Both source and documentation include an "@metadata" object.
-    - (Note that no parsing is done of the metadata objects.)
+* Both source and documentation include a "@metadata" object.
+    - (Note no parsing is done of the metadata objects.)
 * Each defined source message has a matching defined documentation message.
-    - (Note that no parsing is done of the message definitions or their documentation, including if they are simply the blank string "".)
+    - (Note no parsing is done of the message definitions or their documentation, including if they are simply the blank string "".)
 * Each defined documentation message has a matching defined source message.
