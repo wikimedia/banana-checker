@@ -26,8 +26,6 @@ module.exports = function ( grunt ) {
 				sourceMessageKeys = Object.keys( sourceMessages ),
 				count = 0;
 
-			messageCount += sourceMessageKeys.length;
-
 			sourceMessagesMetadataIndex = sourceMessageKeys.indexOf( '@metadata' );
 			if ( sourceMessagesMetadataIndex === -1 ) {
 				grunt.log.error( 'Source file lacks a metadata block.' );
@@ -35,6 +33,8 @@ module.exports = function ( grunt ) {
 				return;
 			}
 			sourceMessageKeys.splice( sourceMessagesMetadataIndex, 1 );
+			// Count after @metadata is removed
+			messageCount += sourceMessageKeys.length;
 
 			documentationMessagesMetadataIndex = documentationMessageKeys.indexOf( '@metadata' );
 			if ( documentationMessagesMetadataIndex === -1 ) {
