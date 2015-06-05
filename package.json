@@ -14,12 +14,7 @@
     "checker",
     "banana"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/wikimedia/grunt-banana-checker/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
   },
