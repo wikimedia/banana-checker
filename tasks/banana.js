@@ -13,18 +13,39 @@ module.exports = function ( grunt ) {
 			messageCount = 0,
 			ok = true;
 
+		if ( this.filesSrc.length === 0 ) {
+			grunt.log.error( 'Target directory does not exist.' );
+			ok = false;
+			return;
+		}
+
 		this.filesSrc.forEach( function ( dir ) {
-			var documentationMessagesMetadataIndex,
-				sourceMessagesMetadataIndex,
+			var sourceMessages, sourceMessageKeys,
+				documentationMessages, documentationMessageKeys,
+				sourceMessagesMetadataIndex, documentationMessagesMetadataIndex,
 				message,
 				documentationIndex,
-				documentationMessages = grunt.file.readJSON( path.resolve( dir, options.documentationFile ) ),
-				documentationMessageKeys = Object.keys( documentationMessages ),
 				documentationMessageBlanks = [],
 				sourceMessageMissing = [],
-				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) ),
-				sourceMessageKeys = Object.keys( sourceMessages ),
 				count = 0;
+
+			try {
+				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) );
+				sourceMessageKeys = Object.keys( sourceMessages );
+			} catch ( e ) {
+				grunt.log.error( 'Loading source messages failed: "' + e + '".' );
+				ok = false;
+				return;
+			}
+
+			try {
+				documentationMessages = grunt.file.readJSON( path.resolve( dir, options.documentationFile ) );
+				documentationMessageKeys = Object.keys( documentationMessages );
+			} catch ( e ) {
+				grunt.log.error( 'Loading documentation messages failed: "' + e + '".' );
+				ok = false;
+				return;
+			}
 
 			sourceMessagesMetadataIndex = sourceMessageKeys.indexOf( '@metadata' );
 			if ( sourceMessagesMetadataIndex === -1 ) {
