@@ -20,6 +20,12 @@ module.exports = function ( grunt ) {
 
 		ok = true;
 
+		if ( this.filesSrc.length === 0 ) {
+			grunt.log.error( 'Target directory does not exist.' );
+			ok = false;
+			return;
+		}
+
 		this.filesSrc.forEach( function ( dir ) {
 			var sourceMessages, sourceMessageKeys,
 				documentationMessages, documentationMessageKeys,
