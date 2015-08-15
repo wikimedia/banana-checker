@@ -34,6 +34,30 @@ module.exports = function ( grunt ) {
 					sourceFile: 'messages.json',
 					documentationFile: 'documentation.json'
 				}
+			},
+			requireMetadata: {
+				src: 'test/requireMetadata',
+				options: {
+					requireMetadata: false
+				}
+			},
+			requireCompleteMessageDocumentation: {
+				src: 'test/requireCompleteMessageDocumentation',
+				options: {
+					requireCompleteMessageDocumentation: false
+				}
+			},
+			requireNonEmptyDocumentation: {
+				src: 'test/requireNonEmptyDocumentation',
+				options: {
+					requireNonEmptyDocumentation: false
+				}
+			},
+			requireNoUnusedDocumentation: {
+				src: 'test/requireNoUnusedDocumentation',
+				options: {
+					requireNoUnusedDocumentation: false
+				}
 			}
 		},
 		watch: {
