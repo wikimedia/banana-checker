@@ -7,12 +7,22 @@ module.exports = function ( grunt ) {
 	grunt.registerMultiTask( 'banana', function () {
 		var ok,
 			path = require( 'path' ),
+			fs = require( 'fs' ),
 			options = this.options( {
 				sourceFile: 'en.json',
 				documentationFile: 'qqq.json',
+
 				requireMetadata: true,
+
 				requireCompleteMessageDocumentation: true,
-				requireNoUnusedDocumentation: true
+				disallowUnusedDocumentation: true,
+
+				disallowBlankTranslations: false,
+				disallowDuplicateTranslations: false,
+				disallowUnusedTranslations: false,
+
+				requireCompleteTranslationLanguages: [],
+				requireCompleteTranslationMessages: []
 			} ),
 			messageCount = 0;
 
@@ -30,62 +40,121 @@ module.exports = function ( grunt ) {
 		}
 
 		this.filesSrc.forEach( function ( dir ) {
-			var sourceMessages, sourceMessageKeys,
-				documentationMessages, documentationMessageKeys,
-				sourceMessagesMetadataIndex, documentationMessagesMetadataIndex,
+			var sourceMessages, sourceMessageKeys, // Source message data
+				documentationMessages, documentationMessageKeys, // Documentation message data
+				translatedFiles, translatedData = {}, // Translated message data
 				message,
-				documentationIndex,
+				index,
+				offset,
 				documentationMessageBlanks = [],
 				sourceMessageMissing = [],
 				count = 0;
 
-			try {
-				sourceMessages = grunt.file.readJSON( path.resolve( dir, options.sourceFile ) );
-				sourceMessageKeys = Object.keys( sourceMessages );
-			} catch ( e ) {
-				grunt.log.error( 'Loading source messages failed: "' + e + '".' );
-				ok = false;
-				return;
-			}
+			function messages( filename, type ) {
+				var messageArray;
 
-			try {
-				documentationMessages = grunt.file.readJSON( path.resolve( dir, options.documentationFile ) );
-				documentationMessageKeys = Object.keys( documentationMessages );
-			} catch ( e ) {
-				grunt.log.error( 'Loading documentation messages failed: "' + e + '".' );
-				ok = false;
-				return;
-			}
+				try {
+					messageArray = grunt.file.readJSON( path.resolve( dir, filename ) );
+				} catch ( e ) {
+					grunt.log.error( 'Loading ' + type + ' messages failed: "' + e + '".' );
+					ok = false;
+					return;
+				}
 
-			sourceMessagesMetadataIndex = sourceMessageKeys.indexOf( '@metadata' );
-			if ( options.requireMetadata && sourceMessagesMetadataIndex === -1 ) {
-				grunt.log.error( 'Source file lacks a metadata block.' );
-				ok = false;
-				return;
+				return messageArray;
 			}
-			sourceMessageKeys.splice( sourceMessagesMetadataIndex, 1 );
+			function keysNoMetadata( messageArray, type ) {
+				var keys, offset;
+
+				try {
+					keys = Object.keys( messageArray );
+				} catch ( e ) {
+					grunt.log.error( 'Loading ' + type + ' messages failed: "' + e + '".' );
+					ok = false;
+					return;
+				}
+
+				offset = keys.indexOf( '@metadata' );
+				if ( offset === -1 ) {
+					if ( options.requireMetadata ) {
+						grunt.log.error( 'No metadata block in the ' + type + ' messages file.' );
+						ok = false;
+						return;
+					}
+				} else {
+					keys.splice( offset, 1 );
+				}
+
+				return keys;
+			}
+			sourceMessages = messages( options.sourceFile, 'source' );
+			sourceMessageKeys = keysNoMetadata( sourceMessages, 'source' );
+
+			documentationMessages = messages( options.documentationFile, 'documentation' );
+			documentationMessageKeys = keysNoMetadata( documentationMessages, 'documentation' );
+
 			// Count after @metadata is removed
 			messageCount += sourceMessageKeys.length;
 
-			documentationMessagesMetadataIndex = documentationMessageKeys.indexOf( '@metadata' );
-			if ( options.requireMetadata && documentationMessagesMetadataIndex === -1 ) {
-				grunt.log.error( 'Documentation file lacks a metadata block.' );
-				ok = false;
-				return;
-			}
-			documentationMessageKeys.splice( documentationMessagesMetadataIndex, 1 );
+			translatedFiles = fs.readdirSync( dir ).filter( function ( value ) {
+				return (
+					value !== options.sourceFile &&
+					value !== options.documentationFile &&
+					value.match( /.*.json/ )
+				);
+			} );
+
+			translatedFiles.forEach( function ( languageFile ) {
+				var language = languageFile.match( new RegExp( '(.*)\.json$' ) )[ 1 ],
+					languageMesages = messages( languageFile, language ),
+					keys = keysNoMetadata( languageMesages, language ),
+					blanks = [],
+					duplicates = [],
+					unuseds = [],
+					missing = sourceMessageKeys.slice( 0 );
+
+				for ( index in keys ) {
+					message = keys[ index ];
+
+					if ( missing.indexOf( message ) !== -1 ) {
+						if ( languageMesages[ message ] === sourceMessages[ message ] ) {
+							duplicates.push( message );
+						}
+						missing.splice( missing.indexOf( message ), 1 );
+					} else {
+						unuseds.push( message );
+					}
+
+					if ( typeof languageMesages[ message ] !== 'string' ) {
+						continue;
+					}
+					if ( languageMesages[ message ].trim() === '' ) {
+						blanks.push( message );
+					}
+				}
+
+				translatedData[ language ] = {
+					messages: languageMesages,
+					keys: keys,
+					blank: blanks,
+					duplicate: duplicates,
+					unused: unuseds,
+					missing: missing
+				};
+			} );
 
 			while ( sourceMessageKeys.length > 0 ) {
-				message = sourceMessageKeys[0];
-				documentationIndex = documentationMessageKeys.indexOf( message );
+				message = sourceMessageKeys[ 0 ];
 
-				if ( documentationIndex !== -1 ) {
+				offset = documentationMessageKeys.indexOf( message );
 
-					if ( documentationMessages[message].trim() === '' ) {
+				if ( offset !== -1 ) {
+
+					if ( documentationMessages[ message ].trim() === '' ) {
 						documentationMessageBlanks.push( message );
 					}
 
-					documentationMessageKeys.splice( documentationIndex, 1 );
+					documentationMessageKeys.splice( offset, 1 );
 				} else {
 					sourceMessageMissing.push( message );
 				}
@@ -107,7 +176,7 @@ module.exports = function ( grunt ) {
 				}
 			}
 
-			if ( options.requireNonEmptyDocumentation ) {
+			if ( options.disallowEmptyDocumentation ) {
 				count = documentationMessageBlanks.length;
 				if ( count > 0 ) {
 					ok = false;
@@ -122,7 +191,7 @@ module.exports = function ( grunt ) {
 				}
 			}
 
-			if ( options.requireNoUnusedDocumentation ) {
+			if ( options.disallowUnusedDocumentation ) {
 				count = documentationMessageKeys.length;
 				if ( count > 0 ) {
 					ok = false;
@@ -136,6 +205,112 @@ module.exports = function ( grunt ) {
 					} );
 				}
 			}
+
+			for ( index in translatedData ) {
+				if ( !translatedData.hasOwnProperty( index ) ) {
+					continue;
+				}
+
+				if ( options.disallowBlankTranslations ) {
+					count = translatedData[ index ].blank.length;
+					if ( count > 0 ) {
+						ok = false;
+						grunt.log.error( 'The "' + index + '" translation has ' + count + ' blank translation' + ( count > 1 ? 's' : '' ) + ':' );
+
+						// jshint -W083
+						translatedData[ index ].blank.forEach( function ( message ) {
+							grunt.log.error( 'The translation of "' + message + '" is blank.' );
+						} );
+						// jshint +W083
+					}
+				}
+
+				if ( options.disallowDuplicateTranslations ) {
+					count = translatedData[ index ].duplicate.length;
+					if ( count > 0 ) {
+						ok = false;
+						grunt.log.error( 'The "' + index + '" translation has ' + count + ' duplicate translation' + ( count > 1 ? 's' : '' ) + ':' );
+
+						// jshint -W083
+						translatedData[ index ].duplicate.forEach( function ( message ) {
+							grunt.log.error( 'The translation of "' + message + '" is a duplicate of the primary message.' );
+						} );
+						// jshint +W083
+					}
+				}
+
+				if ( options.disallowUnusedTranslations ) {
+					count = translatedData[ index ].unused.length;
+					if ( count > 0 ) {
+						ok = false;
+						grunt.log.error( 'The "' + index + '" translation has ' + count + ' unused translation' + ( count > 1 ? 's' : '' ) + ':' );
+
+						// jshint -W083
+						translatedData[ index ].unused.forEach( function ( message ) {
+							grunt.log.error( 'The translation of "' + message + '" is unused.' );
+						} );
+						// jshint +W083
+					}
+				}
+
+			}
+
+			if ( options.requireCompleteTranslationLanguages.length ) {
+				for ( index in translatedData ) {
+					if (
+						!translatedData.hasOwnProperty( index ) ||
+						( options.requireCompleteTranslationLanguages.indexOf( index ) === -1 )
+					) {
+						continue;
+					}
+
+					count = translatedData[ index ].missing.length;
+					if ( count > 0 ) {
+						ok = false;
+						grunt.log.error( 'The "' + index + '" translation has ' + count + ' missing translation' + ( count > 1 ? 's' : '' ) + ':' );
+
+						// jshint -W083
+						translatedData[ index ].missing.forEach( function ( message ) {
+							grunt.log.error( 'The translation of "' + message + '" is missing.' );
+						} );
+						// jshint +W083
+					}
+				}
+			}
+
+			if ( options.requireCompleteTranslationMessages.length ) {
+				for ( index in translatedData ) {
+					if ( !translatedData.hasOwnProperty( index ) ) {
+						continue;
+					}
+
+					for ( message in translatedData[ index ].missing ) {
+						if ( !translatedData[ index ].missing.hasOwnProperty( sourceMessageKeys[ message ] ) ) {
+							continue;
+						}
+
+						offset = options.requireCompleteTranslationMessages.indexOf( sourceMessageKeys[ message ] );
+
+						if ( offset === -1 ) {
+							translatedData[ index ].missing.splice( offset, 1 );
+						}
+					}
+
+					count = translatedData[ index ].missing.length;
+					if ( count > 0 ) {
+						ok = false;
+						grunt.log.error( 'The "' + index + '" translation is missing ' + count + ' required message' + ( count > 1 ? 's' : '' ) + ':' );
+
+						// jshint -W083
+						translatedData[ index ].missing.forEach( function ( message ) {
+							grunt.log.error( 'The required message "' + message + '" is missing.' );
+						} );
+						// jshint +W083
+					}
+				}
+
+			}
+
 		} );
 
 		if ( !ok ) {

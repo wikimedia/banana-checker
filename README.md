@@ -34,41 +34,73 @@ You can specify the targets and options for the task using the normal Grunt conf
 
 For edge cases, you can set some path options:
 
-### sourceFile
+#### sourceFile
 Type: `string`
 Default value: `"en.json"`
 
 The JSON file providing the primary messages.
 
-### documentationFile
+#### documentationFile
 Type: `string`
 Default value: `"qqq.json"`
 
 The JSON file providing the documentation messages.
 
-### requireMetadata
+#### requireMetadata
 Type: `boolean`
 Default value: `true`
 
 Whether to fail if message files don't have a `@metadata` meta-data key.
 
-### requireCompleteMessageDocumentation
+#### requireCompleteMessageDocumentation
 Type: `boolean`
 Default value: `true`
 
 Whether to fail if any message is in the primary file but not documented.
 
-### requireNonEmptyDocumentation
+#### disallowEmptyDocumentation
 Type: `boolean`
 Default value: `true`
 
 Whether to fail if any message is in the primary file but documented as a blank string.
 
-### requireNoUnusedDocumentation
+#### disallowUnusedDocumentation
 Type: `boolean`
 Default value: `true`
 
 Whether to fail if any documented message isn't in the primary file.
+
+#### disallowBlankTranslations
+Type: `boolean`
+Default value: `false`
+
+Whether to fail if any message is translated as a blank string.
+
+#### disallowDuplicateTranslations
+Type: `boolean`
+Default value: `false`
+
+Whether to fail if any message is translated as identical to the original string.
+
+#### disallowUnusedTranslations
+Type: `boolean`
+Default value: `false`
+
+Whether to fail if any translated message isn't in the primary file.
+
+#### requireCompleteTranslationLanguages
+Type: `string[]`
+Default value: `[]`
+Example value: `[ 'fr', 'es' ]`
+
+Languages on which to fail if any message in the primary file is missing.
+
+#### requireCompleteTranslationMessages
+Type: `string[]`
+Default value: `[]`
+Example value: `[ 'first-message-key', 'third-message-key' ]`
+
+Messages on which to fail if missing in any provided language.
 
 
 Example uses

@@ -47,16 +47,16 @@ module.exports = function ( grunt ) {
 					requireCompleteMessageDocumentation: false
 				}
 			},
-			requireNonEmptyDocumentation: {
-				src: 'test/requireNonEmptyDocumentation',
+			disallowEmptyDocumentation: {
+				src: 'test/disallowEmptyDocumentation',
 				options: {
-					requireNonEmptyDocumentation: false
+					disallowEmptyDocumentation: false
 				}
 			},
-			requireNoUnusedDocumentation: {
-				src: 'test/requireNoUnusedDocumentation',
+			disallowUnusedDocumentation: {
+				src: 'test/disallowUnusedDocumentation',
 				options: {
-					requireNoUnusedDocumentation: false
+					disallowUnusedDocumentation: false
 				}
 			}
 		},
