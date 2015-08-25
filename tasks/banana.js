@@ -9,7 +9,10 @@ module.exports = function ( grunt ) {
 			path = require( 'path' ),
 			options = this.options( {
 				sourceFile: 'en.json',
-				documentationFile: 'qqq.json'
+				documentationFile: 'qqq.json',
+				requireMetadata: true,
+				requireCompleteMessageDocumentation: true,
+				requireNoUnusedDocumentation: true
 			} ),
 			messageCount = 0;
 
@@ -19,6 +22,12 @@ module.exports = function ( grunt ) {
 		}
 
 		ok = true;
+
+		if ( this.filesSrc.length === 0 ) {
+			grunt.log.error( 'Target directory does not exist.' );
+			ok = false;
+			return;
+		}
 
 		this.filesSrc.forEach( function ( dir ) {
 			var sourceMessages, sourceMessageKeys,
@@ -49,7 +58,7 @@ module.exports = function ( grunt ) {
 			}
 
 			sourceMessagesMetadataIndex = sourceMessageKeys.indexOf( '@metadata' );
-			if ( sourceMessagesMetadataIndex === -1 ) {
+			if ( options.requireMetadata && sourceMessagesMetadataIndex === -1 ) {
 				grunt.log.error( 'Source file lacks a metadata block.' );
 				ok = false;
 				return;
@@ -59,7 +68,7 @@ module.exports = function ( grunt ) {
 			messageCount += sourceMessageKeys.length;
 
 			documentationMessagesMetadataIndex = documentationMessageKeys.indexOf( '@metadata' );
-			if ( documentationMessagesMetadataIndex === -1 ) {
+			if ( options.requireMetadata && documentationMessagesMetadataIndex === -1 ) {
 				grunt.log.error( 'Documentation file lacks a metadata block.' );
 				ok = false;
 				return;
@@ -83,43 +92,49 @@ module.exports = function ( grunt ) {
 				sourceMessageKeys.splice( 0, 1 );
 			}
 
-			count = sourceMessageMissing.length;
-			if ( count > 0 ) {
-				ok = false;
+			if ( options.requireCompleteMessageDocumentation ) {
+				count = sourceMessageMissing.length;
+				if ( count > 0 ) {
+					ok = false;
 
-				grunt.log.error(
-					count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation.'
-				);
+					grunt.log.error(
+						count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation.'
+					);
 
-				sourceMessageMissing.forEach( function ( message ) {
-					grunt.log.error( 'Message "' + message + '" lacks documentation.' );
-				} );
+					sourceMessageMissing.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" lacks documentation.' );
+					} );
+				}
 			}
 
-			count = documentationMessageBlanks.length;
-			if ( count > 0 ) {
-				ok = false;
+			if ( options.requireNonEmptyDocumentation ) {
+				count = documentationMessageBlanks.length;
+				if ( count > 0 ) {
+					ok = false;
 
-				grunt.log.error(
-					count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' blank.'
-				);
+					grunt.log.error(
+						count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' blank.'
+					);
 
-				documentationMessageBlanks.forEach( function ( message ) {
-					grunt.log.error( 'Message "' + message + '" is documented with a blank string.' );
-				} );
+					documentationMessageBlanks.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" is documented with a blank string.' );
+					} );
+				}
 			}
 
-			count = documentationMessageKeys.length;
-			if ( count > 0 ) {
-				ok = false;
+			if ( options.requireNoUnusedDocumentation ) {
+				count = documentationMessageKeys.length;
+				if ( count > 0 ) {
+					ok = false;
 
-				grunt.log.error(
-					count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' undefined.'
-				);
+					grunt.log.error(
+						count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' undefined.'
+					);
 
-				documentationMessageKeys.forEach( function ( message ) {
-					grunt.log.error( 'Message "' + message + '" is documented but undefined.' );
-				} );
+					documentationMessageKeys.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" is documented but undefined.' );
+					} );
+				}
 			}
 		} );
 

@@ -46,6 +46,30 @@ Default value: `"qqq.json"`
 
 The JSON file providing the documentation messages.
 
+### requireMetadata
+Type: `boolean`
+Default value: `true`
+
+Whether to fail if message files don't have a `@metadata` meta-data key.
+
+### requireCompleteMessageDocumentation
+Type: `boolean`
+Default value: `true`
+
+Whether to fail if any message is in the primary file but not documented.
+
+### requireNonEmptyDocumentation
+Type: `boolean`
+Default value: `true`
+
+Whether to fail if any message is in the primary file but documented as a blank string.
+
+### requireNoUnusedDocumentation
+Type: `boolean`
+Default value: `true`
+
+Whether to fail if any documented message isn't in the primary file.
+
 
 Example uses
 --------------------
