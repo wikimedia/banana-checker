@@ -35,18 +35,6 @@ module.exports = function ( grunt ) {
 					documentationFile: 'documentation.json'
 				}
 			},
-			requireMetadata: {
-				src: 'test/requireMetadata',
-				options: {
-					requireMetadata: false
-				}
-			},
-			requireCompleteMessageDocumentation: {
-				src: 'test/requireCompleteMessageDocumentation',
-				options: {
-					requireCompleteMessageDocumentation: false
-				}
-			},
 			disallowEmptyDocumentation: {
 				src: 'test/disallowEmptyDocumentation',
 				options: {
@@ -57,6 +45,18 @@ module.exports = function ( grunt ) {
 				src: 'test/disallowUnusedDocumentation',
 				options: {
 					disallowUnusedDocumentation: false
+				}
+			},
+			requireCompleteMessageDocumentation: {
+				src: 'test/requireCompleteMessageDocumentation',
+				options: {
+					requireCompleteMessageDocumentation: false
+				}
+			},
+			requireMetadata: {
+				src: 'test/requireMetadata',
+				options: {
+					requireMetadata: false
 				}
 			}
 		},

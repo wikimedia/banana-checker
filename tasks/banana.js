@@ -40,12 +40,14 @@ module.exports = function ( grunt ) {
 		}
 
 		this.filesSrc.forEach( function ( dir ) {
-			var sourceMessages, sourceMessageKeys, // Source message data
-				documentationMessages, documentationMessageKeys, // Documentation message data
-				translatedFiles, translatedData = {}, // Translated message data
-				message,
-				index,
-				offset,
+			var message, index, offset,
+				// Source message data
+				sourceMessages, sourceMessageKeys,
+				// Documentation message data
+				documentationMessages, documentationMessageKeys,
+				// Translated message data
+				translatedFiles,
+				translatedData = {},
 				documentationMessageBlanks = [],
 				sourceMessageMissing = [],
 				count = 0;
@@ -105,7 +107,7 @@ module.exports = function ( grunt ) {
 			} );
 
 			translatedFiles.forEach( function ( languageFile ) {
-				var language = languageFile.match( new RegExp( '(.*)\.json$' ) )[ 1 ],
+				var language = languageFile.match( /(.*)\.json$/ )[ 1 ],
 					languageMesages = messages( languageFile, language ),
 					keys = keysNoMetadata( languageMesages, language ),
 					blanks = [],
