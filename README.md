@@ -72,19 +72,19 @@ Whether to fail if any documented message isn't in the primary file.
 
 #### disallowBlankTranslations
 Type: `boolean`
-Default value: `false`
+Default value: `true`
 
 Whether to fail if any message is translated as a blank string.
 
 #### disallowDuplicateTranslations
 Type: `boolean`
-Default value: `false`
+Default value: `true`
 
 Whether to fail if any message is translated as identical to the original string.
 
 #### disallowUnusedTranslations
 Type: `boolean`
-Default value: `false`
+Default value: `true`
 
 Whether to fail if any translated message isn't in the primary file.
 

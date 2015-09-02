@@ -2,8 +2,8 @@
 	"@metadata": {
 		"metadata-key": "metadata value"
 	},
-	"first-message-key": "first message value",
-	"third-message-key": "  ",
-	"fourth-message-key": "fourth message value",
-	"fifth-message-key": "ascsa"
+	"first-message-key": "erste Nachricht Wert",
+	"second-message-key": "zweiten Nachricht Wert",
+	"third-message-key": "dritten Nachricht Wert",
+	"fourth-message-key": "vierten Nachricht Wert"
 }

@@ -17,9 +17,9 @@ module.exports = function ( grunt ) {
 				requireCompleteMessageDocumentation: true,
 				disallowUnusedDocumentation: true,
 
-				disallowBlankTranslations: false,
-				disallowDuplicateTranslations: false,
-				disallowUnusedTranslations: false,
+				disallowBlankTranslations: true,
+				disallowDuplicateTranslations: true,
+				disallowUnusedTranslations: true,
 
 				requireCompleteTranslationLanguages: [],
 				requireCompleteTranslationMessages: []
