@@ -54,7 +54,7 @@ module.exports = function ( grunt ) {
 				} catch ( e ) {
 					grunt.log.error( 'Loading ' + type + ' messages failed: "' + e + '".' );
 					ok = false;
-					return;
+					throw e;
 				}
 
 				return messageArray;
@@ -67,7 +67,7 @@ module.exports = function ( grunt ) {
 				} catch ( e ) {
 					grunt.log.error( 'Loading ' + type + ' messages failed: "' + e + '".' );
 					ok = false;
-					return;
+					throw e;
 				}
 
 				offset = keys.indexOf( '@metadata' );
@@ -75,7 +75,6 @@ module.exports = function ( grunt ) {
 					if ( options.requireMetadata ) {
 						grunt.log.error( 'No metadata block in the ' + type + ' messages file.' );
 						ok = false;
-						return;
 					}
 				} else {
 					keys.splice( offset, 1 );
