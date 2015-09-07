@@ -1,5 +1,12 @@
 # grunt-banana-checker Release History
 
+## v0.3.0 / 2015-09-01
+* Fail if the target directory doesn't exist (James D. Forrester)
+* Allow individual checks to be disabled in config (James D. Forrester)
+* Be able to require complete translations, or specific messages in all translations (James D. Forrester)
+* build: Bump grunt-jscs to latest version (James D. Forrester)
+* Enforce disallowBlankTranslations, disallowDuplicateTranslations and disallowUnusedTranslations (James D. Forrester)
+
 ## v0.2.2 / 2015-06-05
 * Fix off-by-one error in counting the number of messages (Kunal Mehta)
 * build: Bump devDep grunt-contrib-jshint to 0.11.2 (James D. Forrester)
