@@ -79,7 +79,7 @@ Whether to fail if any message is translated as a blank string.
 
 #### disallowDuplicateTranslations
 Type: `boolean`
-Default value: `true`
+Default value: `false`
 
 Whether to fail if any message is translated as identical to the original string.
 
