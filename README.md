@@ -85,7 +85,7 @@ Whether to fail if any message is translated as identical to the original string
 
 #### disallowUnusedTranslations
 Type: `boolean`
-Default value: `true`
+Default value: `false`
 
 Whether to fail if any translated message isn't in the primary file.
 
