@@ -1,5 +1,13 @@
 # grunt-banana-checker Release History
 
+## v0.4.0 / 2015-10-06
+* Make disallowUnusedTranslations default to false (Ed Sanders)
+* Make disallowDuplicateTranslations default to false (Ed Sanders)
+* build: Remove use of global grunt-cli (Timo Tijhof)
+* build: Add Node.js v0.12 and v4.0 (Timo Tijhof)
+* tests: Migrate Travis to container-based infrastructure (James D. Forrester)
+* readme: Add line break between images and h1 (Timo Tijhof)
+
 ## v0.3.0 / 2015-09-01
 * Fail if the target directory doesn't exist (James D. Forrester)
 * Allow individual checks to be disabled in config (James D. Forrester)
