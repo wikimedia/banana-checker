@@ -24,6 +24,6 @@
     "grunt-cli": "0.1.13",
     "grunt-contrib-jshint": "1.0.0",
     "grunt-contrib-watch": "0.6.1",
-    "grunt-jscs": "2.1.0"
+    "grunt-jscs": "2.8.0"
   }
 }
