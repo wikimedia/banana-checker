@@ -41,6 +41,7 @@ module.exports = function ( grunt ) {
 				documentationMessages, documentationMessageKeys,
 				// Translated message data
 				translatedFiles,
+				jsonFilenameRegex = /(.*)\.json$/,
 				translatedData = {},
 				documentationMessageBlanks = [],
 				sourceMessageMissing = [],
@@ -95,12 +96,12 @@ module.exports = function ( grunt ) {
 				return (
 					value !== options.sourceFile &&
 					value !== options.documentationFile &&
-					value.match( /.*\.json$/ )
+					value.match( jsonFilenameRegex )
 				);
 			} );
 
 			translatedFiles.forEach( function ( languageFile ) {
-				var language = languageFile.match( /(.*)\.json$/ )[ 1 ],
+				var language = languageFile.match( jsonFilenameRegex )[ 1 ],
 					languageMesages = messages( languageFile, language ),
 					keys = keysNoMetadata( languageMesages, language ),
 					blanks = [],
