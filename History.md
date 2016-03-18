@@ -1,5 +1,10 @@
 # grunt-banana-checker Release History
 
+## v0.5.0 / 2016-03-18
+* Don't crash when encountering file names that contain '.json' in the middle (Roan Kattouw)
+* Extract the regex for a JSON filename (James Forrester)
+* build: Bump various devDependencies to latest (paladox)
+
 ## v0.4.0 / 2015-10-06
 * Make disallowUnusedTranslations default to false (Ed Sanders)
 * Make disallowDuplicateTranslations default to false (Ed Sanders)
