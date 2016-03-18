@@ -95,7 +95,7 @@ module.exports = function ( grunt ) {
 				return (
 					value !== options.sourceFile &&
 					value !== options.documentationFile &&
-					value.match( /.*.json/ )
+					value.match( /.*\.json$/ )
 				);
 			} );
 
