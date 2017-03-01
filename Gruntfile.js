@@ -58,6 +58,15 @@ module.exports = function ( grunt ) {
 				options: {
 					requireMetadata: false
 				}
+			},
+			skipIncompleteMessageDocumentation: {
+				src: 'test/skipIncompleteMessageDocumentation',
+				options: {
+					skipIncompleteMessageDocumentation: [
+						'third-message-key',
+						'fourth-message-key'
+					]
+				}
 			}
 		},
 		watch: {

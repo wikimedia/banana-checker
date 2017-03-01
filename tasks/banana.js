@@ -22,7 +22,9 @@ module.exports = function ( grunt ) {
 				disallowUnusedTranslations: false,
 
 				requireCompleteTranslationLanguages: [],
-				requireCompleteTranslationMessages: []
+				requireCompleteTranslationMessages: [],
+
+				skipIncompleteMessageDocumentation: []
 			} ),
 			messageCount = 0;
 
@@ -158,6 +160,10 @@ module.exports = function ( grunt ) {
 			}
 
 			if ( options.requireCompleteMessageDocumentation ) {
+				// Filter out any missing message that is OK to be skipped
+				sourceMessageMissing = sourceMessageMissing.filter( function ( value ) {
+					return options.skipIncompleteMessageDocumentation.indexOf( value ) === -1;
+				} );
 				count = sourceMessageMissing.length;
 				if ( count > 0 ) {
 					ok = false;
