@@ -107,7 +107,7 @@ Messages on which to fail if missing in any provided language.
 Example uses
 --------------------
 
-[OOjs UI](https://www.mediawiki.org/wiki/VisualEditor) uses this on [a single directory of messages](http://git.wikimedia.org/blob/oojs%2Fui.git/HEAD/Gruntfile.js):
+[OOjs UI](https://www.mediawiki.org/wiki/VisualEditor) uses this on [a single directory of messages](https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/Gruntfile.js):
 
 <pre lang=js>
 banana: {
@@ -115,7 +115,7 @@ banana: {
 }
 </pre>
 
-[VisualEditor](https://www.mediawiki.org/wiki/VisualEditor)'s MediaWiki extension uses this on [two directories as a single test](https://git.wikimedia.org/blob/mediawiki%2Fextensions%2FVisualEditor.git/HEAD/Gruntfile.js):
+[VisualEditor](https://www.mediawiki.org/wiki/VisualEditor)'s MediaWiki extension uses this on [two directories as a single test](https://phabricator.wikimedia.org/diffusion/EVED/browse/master/Gruntfile.js):
 
 <pre lang=js>
 banana: {
@@ -123,7 +123,7 @@ banana: {
 }
 </pre>
 
-[MediaWiki](https://www.mediawiki.org/wiki/MediaWiki) uses this on [two directories as different tests](https://git.wikimedia.org/blob/mediawiki%2Fcore.git/HEAD/tests%2Ffrontend%2FGruntfile.js) – one for the main software and another for the installer:
+[MediaWiki](https://www.mediawiki.org/wiki/MediaWiki) uses this on [two directories as different tests](https://phabricator.wikimedia.org/source/mediawiki/browse/master/Gruntfile.js) – one for the main software and another for the installer:
 
 <pre lang=js>
 banana: {
