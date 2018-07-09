@@ -2,22 +2,15 @@
  * Grunt file
  */
 
-/*jshint node:true */
+/* eslint-env node */
 module.exports = function ( grunt ) {
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+	grunt.loadNpmTasks( 'grunt-eslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-jscs' );
 	grunt.loadTasks( './tasks/' );
 
 	grunt.initConfig( {
-		jshint: {
-			options: {
-				jshintrc: true
-			},
+		eslint: {
 			all: [ '*.js', '{tasks,test}/**/*.js' ]
-		},
-		jscs: {
-			src: '<%= jshint.all %>'
 		},
 		banana: {
 			simple: 'test/simple',
@@ -70,11 +63,11 @@ module.exports = function ( grunt ) {
 			}
 		},
 		watch: {
-			files: [ '<%= jshint.all %>', '.{jshintrc,jshintignore}' ],
+			files: [ '<%= eslint.all %>', '.{eslintrc.json}' ],
 			tasks: [ 'test' ]
 		}
 	} );
 
-	grunt.registerTask( 'test', [ 'jshint', 'jscs', 'banana' ] );
+	grunt.registerTask( 'test', [ 'eslint', 'banana' ] );
 	grunt.registerTask( 'default', 'test' );
 };

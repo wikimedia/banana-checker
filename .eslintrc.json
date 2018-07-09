@@ -1,0 +1,7 @@
+{
+  "extends": "wikimedia",
+  "env": {},
+  "globals": {},
+  "rules": {
+  }
+}

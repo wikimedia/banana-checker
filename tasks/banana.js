@@ -2,7 +2,7 @@
  * A Grunt checker for the 'banana' format JSON i18n message files.
  */
 
-/*jshint node:true */
+/* eslint-env node */
 module.exports = function ( grunt ) {
 	grunt.registerMultiTask( 'banana', function () {
 		var ok,
@@ -219,11 +219,9 @@ module.exports = function ( grunt ) {
 						ok = false;
 						grunt.log.error( 'The "' + index + '" translation has ' + count + ' blank translation' + ( count > 1 ? 's' : '' ) + ':' );
 
-						// jshint -W083
 						translatedData[ index ].blank.forEach( function ( message ) {
 							grunt.log.error( 'The translation of "' + message + '" is blank.' );
 						} );
-						// jshint +W083
 					}
 				}
 
@@ -233,11 +231,9 @@ module.exports = function ( grunt ) {
 						ok = false;
 						grunt.log.error( 'The "' + index + '" translation has ' + count + ' duplicate translation' + ( count > 1 ? 's' : '' ) + ':' );
 
-						// jshint -W083
 						translatedData[ index ].duplicate.forEach( function ( message ) {
 							grunt.log.error( 'The translation of "' + message + '" is a duplicate of the primary message.' );
 						} );
-						// jshint +W083
 					}
 				}
 
@@ -247,11 +243,9 @@ module.exports = function ( grunt ) {
 						ok = false;
 						grunt.log.error( 'The "' + index + '" translation has ' + count + ' unused translation' + ( count > 1 ? 's' : '' ) + ':' );
 
-						// jshint -W083
 						translatedData[ index ].unused.forEach( function ( message ) {
 							grunt.log.error( 'The translation of "' + message + '" is unused.' );
 						} );
-						// jshint +W083
 					}
 				}
 
@@ -271,11 +265,9 @@ module.exports = function ( grunt ) {
 						ok = false;
 						grunt.log.error( 'The "' + index + '" translation has ' + count + ' missing translation' + ( count > 1 ? 's' : '' ) + ':' );
 
-						// jshint -W083
 						translatedData[ index ].missing.forEach( function ( message ) {
 							grunt.log.error( 'The translation of "' + message + '" is missing.' );
 						} );
-						// jshint +W083
 					}
 				}
 			}
@@ -303,11 +295,9 @@ module.exports = function ( grunt ) {
 						ok = false;
 						grunt.log.error( 'The "' + index + '" translation is missing ' + count + ' required message' + ( count > 1 ? 's' : '' ) + ':' );
 
-						// jshint -W083
 						translatedData[ index ].missing.forEach( function ( message ) {
 							grunt.log.error( 'The required message "' + message + '" is missing.' );
 						} );
-						// jshint +W083
 					}
 				}
 
