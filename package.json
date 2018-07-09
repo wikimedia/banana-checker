@@ -10,7 +10,7 @@
     "url": "git://github.com/wikimedia/grunt-banana-checker.git"
   },
   "homepage": "https://github.com/wikimedia/grunt-banana-checker",
-  "issues": "https://github.com/wikimedia/grunt-banana-checker/issues",
+  "bugs": "https://github.com/wikimedia/grunt-banana-checker/issues",
   "keywords": [
     "gruntplugin",
     "checker",
