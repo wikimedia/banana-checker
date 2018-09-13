@@ -60,6 +60,18 @@ module.exports = function ( grunt ) {
 						'fourth-message-key'
 					]
 				}
+			},
+			requireInitialLowerCase: {
+				src: 'test/requireLowerCase/initial',
+				options: {
+					requireLowerCase: 'initial'
+				}
+			},
+			requireFullLowerCase: {
+				src: 'test/requireLowerCase/full',
+				options: {
+					requireLowerCase: false
+				}
 			}
 		},
 		watch: {
