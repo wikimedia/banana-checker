@@ -65,6 +65,13 @@ Default value: `true`
 
 Whether to fail if any message is in the primary file but documented as a blank string.
 
+#### requireLowerCase
+Type: `boolean` or `"initial"`
+Default value: `true`
+
+Whether to fail if any message key is not lower case. If set to `"initial"`, fail only if the first
+character is not lower case.
+
 #### disallowUnusedDocumentation
 Type: `boolean`
 Default value: `true`

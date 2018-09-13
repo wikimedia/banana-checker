@@ -21,6 +21,8 @@ module.exports = function ( grunt ) {
 				disallowDuplicateTranslations: false,
 				disallowUnusedTranslations: false,
 
+				requireLowerCase: true,
+
 				requireCompleteTranslationLanguages: [],
 				requireCompleteTranslationMessages: [],
 
@@ -47,6 +49,7 @@ module.exports = function ( grunt ) {
 				translatedData = {},
 				documentationMessageBlanks = [],
 				sourceMessageMissing = [],
+				sourceMessageWrongCase = [],
 				count = 0;
 
 			function messages( filename, type ) {
@@ -62,6 +65,7 @@ module.exports = function ( grunt ) {
 
 				return messageArray;
 			}
+
 			function keysNoMetadata( messageArray, type ) {
 				var keys, offset;
 
@@ -85,6 +89,7 @@ module.exports = function ( grunt ) {
 
 				return keys;
 			}
+
 			sourceMessages = messages( options.sourceFile, 'source' );
 			sourceMessageKeys = keysNoMetadata( sourceMessages, 'source' );
 
@@ -141,6 +146,16 @@ module.exports = function ( grunt ) {
 				};
 			} );
 
+			if ( options.requireLowerCase === 'initial' ) {
+				sourceMessageWrongCase = sourceMessageKeys.filter( function ( value ) {
+					return ( value !== '' && value[ 0 ] !== value[ 0 ].toLowerCase() );
+				} );
+			} else if ( options.requireLowerCase ) {
+				sourceMessageWrongCase = sourceMessageKeys.filter( function ( value ) {
+					return value !== value.toLowerCase();
+				} );
+			}
+
 			while ( sourceMessageKeys.length > 0 ) {
 				message = sourceMessageKeys[ 0 ];
 
@@ -189,6 +204,29 @@ module.exports = function ( grunt ) {
 
 					documentationMessageBlanks.forEach( function ( message ) {
 						grunt.log.error( 'Message "' + message + '" is documented with a blank string.' );
+					} );
+				}
+			}
+
+			count = sourceMessageWrongCase.length;
+			if ( count > 0 ) {
+				ok = false;
+
+				if ( options.requireLowerCase === 'initial' ) {
+					grunt.log.error(
+						count + ' message' + ( count > 1 ? 's do' : ' does' ) + ' not start with a lowercase character.'
+					);
+
+					sourceMessageWrongCase.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" should start with a lowercase character.' );
+					} );
+				} else {
+					grunt.log.error(
+						count + ' message' + ( count > 1 ? 's are' : ' is' ) + ' not wholly lowercase.'
+					);
+
+					sourceMessageWrongCase.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" should be in lowercase.' );
 					} );
 				}
 			}
