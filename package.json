@@ -10,7 +10,6 @@
     "url": "git://github.com/wikimedia/grunt-banana-checker.git"
   },
   "homepage": "https://github.com/wikimedia/grunt-banana-checker",
-  "bugs": "https://github.com/wikimedia/grunt-banana-checker/issues",
   "keywords": [
     "gruntplugin",
     "checker",
@@ -21,11 +20,11 @@
     "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
   },
   "devDependencies": {
+    "eslint": "5.5.0",
+    "eslint-config-wikimedia": "0.8.1",
+    "eslint-plugin-qunit": "3.3.1",
     "grunt": "1.0.3",
-    "grunt-cli": "1.2.0",
     "grunt-contrib-watch": "1.1.0",
-    "grunt-eslint": "21.0.0",
-    "eslint": "4.19.1",
-    "eslint-config-wikimedia": "0.5.0"
+    "grunt-eslint": "21.0.0"
   }
 }

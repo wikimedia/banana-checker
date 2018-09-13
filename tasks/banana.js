@@ -209,6 +209,7 @@ module.exports = function ( grunt ) {
 			}
 
 			for ( index in translatedData ) {
+				// eslint-disable-next-line no-prototype-builtins
 				if ( !translatedData.hasOwnProperty( index ) ) {
 					continue;
 				}
@@ -217,8 +218,10 @@ module.exports = function ( grunt ) {
 					count = translatedData[ index ].blank.length;
 					if ( count > 0 ) {
 						ok = false;
-						grunt.log.error( 'The "' + index + '" translation has ' + count + ' blank translation' + ( count > 1 ? 's' : '' ) + ':' );
-
+						grunt.log.error(
+							'The "' + index + '" translation has ' + count + ' blank translation' +
+								( count > 1 ? 's' : '' ) + ':'
+						);
 						translatedData[ index ].blank.forEach( function ( message ) {
 							grunt.log.error( 'The translation of "' + message + '" is blank.' );
 						} );
@@ -229,10 +232,12 @@ module.exports = function ( grunt ) {
 					count = translatedData[ index ].duplicate.length;
 					if ( count > 0 ) {
 						ok = false;
-						grunt.log.error( 'The "' + index + '" translation has ' + count + ' duplicate translation' + ( count > 1 ? 's' : '' ) + ':' );
-
+						grunt.log.error(
+							'The "' + index + '" translation has ' + count + ' duplicate translation' +
+								( count > 1 ? 's' : '' ) + ':'
+						);
 						translatedData[ index ].duplicate.forEach( function ( message ) {
-							grunt.log.error( 'The translation of "' + message + '" is a duplicate of the primary message.' );
+							grunt.log.error( 'The translation of "' + message + '" duplicates the primary message.' );
 						} );
 					}
 				}
@@ -241,7 +246,10 @@ module.exports = function ( grunt ) {
 					count = translatedData[ index ].unused.length;
 					if ( count > 0 ) {
 						ok = false;
-						grunt.log.error( 'The "' + index + '" translation has ' + count + ' unused translation' + ( count > 1 ? 's' : '' ) + ':' );
+						grunt.log.error(
+							'The "' + index + '" translation has ' + count + ' unused translation' +
+								( count > 1 ? 's' : '' ) + ':'
+						);
 
 						translatedData[ index ].unused.forEach( function ( message ) {
 							grunt.log.error( 'The translation of "' + message + '" is unused.' );
@@ -254,6 +262,7 @@ module.exports = function ( grunt ) {
 			if ( options.requireCompleteTranslationLanguages.length ) {
 				for ( index in translatedData ) {
 					if (
+						// eslint-disable-next-line no-prototype-builtins
 						!translatedData.hasOwnProperty( index ) ||
 						( options.requireCompleteTranslationLanguages.indexOf( index ) === -1 )
 					) {
@@ -274,11 +283,13 @@ module.exports = function ( grunt ) {
 
 			if ( options.requireCompleteTranslationMessages.length ) {
 				for ( index in translatedData ) {
+					// eslint-disable-next-line no-prototype-builtins
 					if ( !translatedData.hasOwnProperty( index ) ) {
 						continue;
 					}
 
 					for ( message in translatedData[ index ].missing ) {
+						// eslint-disable-next-line no-prototype-builtins
 						if ( !translatedData[ index ].missing.hasOwnProperty( sourceMessageKeys[ message ] ) ) {
 							continue;
 						}
