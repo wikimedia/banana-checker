@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"metadata-key": "metadata value"
+	},
+	"fIrst-message-key": "first message value",
+	"sECOND-message-key": "second message value",
+	"third-MESSAGE-key": "third message value",
+	"fOURTH-MESSAGE-KEY": "fourth message value"
+}
