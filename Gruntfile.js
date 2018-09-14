@@ -72,6 +72,24 @@ module.exports = function ( grunt ) {
 				options: {
 					requireLowerCase: false
 				}
+			},
+			testRequiringSingleKeyPrefix: {
+				src: 'test/requireKeyPrefix/single',
+				options: {
+					requireKeyPrefix: [ 'alice' ]
+				}
+			},
+			testRequiringSingleKeyPrefixShucked: {
+				src: 'test/requireKeyPrefix/single',
+				options: {
+					requireKeyPrefix: 'alice'
+				}
+			},
+			testRequiringMultipleKeyPrefices: {
+				src: 'test/requireKeyPrefix/multiple',
+				options: {
+					requireKeyPrefix: [ 'alice', 'bob', 'timmy' ]
+				}
 			}
 		},
 		watch: {

@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"metadata-key": "metadata value"
+	},
+	"alice-first-message-key": "first message value",
+	"alice-second-message-key": "second message value",
+	"alice-third-message-key": "third message value",
+	"alice-fourth-message-key": "fourth message value"
+}
