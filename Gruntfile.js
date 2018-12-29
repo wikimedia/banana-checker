@@ -1,7 +1,3 @@
-/*!
- * Grunt file
- */
-
 /* eslint-env node */
 module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-eslint' );
@@ -10,7 +6,7 @@ module.exports = function ( grunt ) {
 
 	grunt.initConfig( {
 		eslint: {
-			all: [ '*.js', '{tasks,test}/**/*.js' ]
+			all: '.'
 		},
 		banana: {
 			testSimple: 'test/simple',
