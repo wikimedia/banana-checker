@@ -22,6 +22,7 @@ module.exports = function ( grunt ) {
 				disallowUnusedTranslations: false,
 
 				requireLowerCase: true,
+				requireKeyPrefix: [],
 
 				requireCompleteTranslationLanguages: [],
 				requireCompleteTranslationMessages: [],
@@ -50,6 +51,7 @@ module.exports = function ( grunt ) {
 				documentationMessageBlanks = [],
 				sourceMessageMissing = [],
 				sourceMessageWrongCase = [],
+				sourceMessageWrongPrefix = [],
 				count = 0;
 
 			function messages( filename, type ) {
@@ -156,6 +158,20 @@ module.exports = function ( grunt ) {
 				} );
 			}
 
+			if ( options.requireKeyPrefix.length ) {
+				if ( typeof options.requireKeyPrefix === 'string' ) {
+					options.requireKeyPrefix = [ options.requireKeyPrefix ];
+				}
+				sourceMessageWrongPrefix = sourceMessageKeys.filter( function ( key ) {
+					return options.requireKeyPrefix
+						.map( function ( prefix ) {
+							return !key.startsWith( prefix );
+						} ).reduce( function ( failed, accumulator ) {
+							return accumulator && failed;
+						} );
+				} );
+			}
+
 			while ( sourceMessageKeys.length > 0 ) {
 				message = sourceMessageKeys[ 0 ];
 
@@ -227,6 +243,29 @@ module.exports = function ( grunt ) {
 
 					sourceMessageWrongCase.forEach( function ( message ) {
 						grunt.log.error( 'Message "' + message + '" should be in lowercase.' );
+					} );
+				}
+			}
+
+			count = sourceMessageWrongPrefix.length;
+			if ( count > 0 ) {
+				ok = false;
+
+				if ( options.requireKeyPrefix.length === 1 ) {
+					grunt.log.error(
+						count + ' message' + ( count > 1 ? 's do' : ' does' ) + ' not start with the required prefix "' + options.requireKeyPrefix[ 0 ] + '".'
+					);
+
+					sourceMessageWrongPrefix.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" should start with the required prefix "' + options.requireKeyPrefix[ 0 ] + '".' );
+					} );
+				} else {
+					grunt.log.error(
+						count + ' message' + ( count > 1 ? 's do' : ' does' ) + ' not start with any of the required prefices.'
+					);
+
+					sourceMessageWrongPrefix.forEach( function ( message ) {
+						grunt.log.error( 'Message "' + message + '" should start with one of the required prefices.' );
 					} );
 				}
 			}

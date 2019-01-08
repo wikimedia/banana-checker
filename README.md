@@ -72,6 +72,13 @@ Default value: `true`
 Whether to fail if any message key is not lower case. If set to `"initial"`, fail only if the first
 character is not lower case.
 
+#### requireKeyPrefix
+Type: `string` or `string[]`
+Default value: `[]`
+
+Whether to fail if any message key is not prefixed by the given prefix, or if multiple, one of the
+given prefices.
+
 #### disallowUnusedDocumentation
 Type: `boolean`
 Default value: `true`
