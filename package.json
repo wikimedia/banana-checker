@@ -1,6 +1,6 @@
 {
   "name": "grunt-banana-checker",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A grunt checker for the \"banana\" JSON i18n system provided by MediaWiki and jquery.i18n",
   "scripts": {
     "test": "grunt test"

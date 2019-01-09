@@ -1,3 +1,15 @@
+v0.7.0 / 2019-01-08
+==================
+
+* Add check for message key case validity (James D. Forrester)
+* Add option to require a message key prefix (James D. Forrester)
+* build: Replace jshint and jscs with eslint (James D. Forrester)
+
+v0.6.0 / 2017-03-01
+==================
+
+* Allow skipping keys that don't have message documentation (Kunal Mehta)
+
 v0.5.0 / 2016-03-18
 ==================
 
