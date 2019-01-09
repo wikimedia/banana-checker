@@ -2,9 +2,6 @@
   "name": "grunt-banana-checker",
   "version": "0.7.0",
   "description": "A grunt checker for the \"banana\" JSON i18n system provided by MediaWiki and jquery.i18n",
-  "scripts": {
-    "test": "grunt test"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/wikimedia/grunt-banana-checker.git"
@@ -21,8 +18,9 @@
   },
   "devDependencies": {
     "eslint-config-wikimedia": "0.10.0",
-    "grunt": "1.0.3",
-    "grunt-contrib-watch": "1.1.0",
-    "grunt-eslint": "21.0.0"
+    "grunt": "1.0.3"
+  },
+  "scripts": {
+    "test": "eslint . && grunt banana"
   }
 }
