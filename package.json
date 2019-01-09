@@ -12,6 +12,9 @@
     "checker",
     "banana"
   ],
+  "files": [
+    "tasks/"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
