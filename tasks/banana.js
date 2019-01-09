@@ -163,12 +163,9 @@ module.exports = function ( grunt ) {
 					options.requireKeyPrefix = [ options.requireKeyPrefix ];
 				}
 				sourceMessageWrongPrefix = sourceMessageKeys.filter( function ( key ) {
-					return options.requireKeyPrefix
-						.map( function ( prefix ) {
-							return !key.startsWith( prefix );
-						} ).reduce( function ( failed, accumulator ) {
-							return accumulator && failed;
-						} );
+					return !options.requireKeyPrefix.some( function ( prefix ) {
+						return key.startsWith( prefix );
+					} );
 				} );
 			}
 
