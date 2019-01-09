@@ -1,13 +1,8 @@
 /* eslint-env node */
 module.exports = function ( grunt ) {
-	grunt.loadNpmTasks( 'grunt-eslint' );
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadTasks( './tasks/' );
 
 	grunt.initConfig( {
-		eslint: {
-			all: '.'
-		},
 		banana: {
 			testSimple: 'test/simple',
 			testLessSimple: {
@@ -87,13 +82,6 @@ module.exports = function ( grunt ) {
 					requireKeyPrefix: [ 'alice', 'bob', 'timmy' ]
 				}
 			}
-		},
-		watch: {
-			files: [ '<%= eslint.all %>', '.{eslintrc.json}' ],
-			tasks: [ 'test' ]
 		}
 	} );
-
-	grunt.registerTask( 'test', [ 'eslint', 'banana' ] );
-	grunt.registerTask( 'default', 'test' );
 };
