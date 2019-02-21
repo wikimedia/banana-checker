@@ -4,6 +4,7 @@
 const assert = require( 'assert' );
 const bananaChecker = require( '../src/banana.js' );
 const PASS = true;
+const FAIL = false;
 
 console.log( 'test: simple' );
 {
@@ -41,6 +42,40 @@ console.log( 'test: custom file names' );
 	assert.strictEqual( result, PASS );
 }
 
+console.log( 'test: files not found' );
+{
+	assert.throws(
+		() => {
+			bananaChecker(
+				'test/simple',
+				{
+					sourceFile: 'messages.json',
+					documentationFile: 'documentation.json'
+				},
+				function () {}
+			);
+		},
+		/Cannot find/
+	);
+}
+
+console.log( 'test: disallowEmptyDocumentation' );
+{
+	let errs = [];
+	const result = bananaChecker(
+		'test/disallowEmptyDocumentation',
+		{
+			disallowEmptyDocumentation: true
+		},
+		function ( err ) { errs.push( err ); }
+	);
+	assert.strictEqual( result, FAIL );
+	assert.deepStrictEqual( errs, [
+		'1 documented message is blank.',
+		'Message "second-message-key" is documented with a blank string.'
+	] );
+}
+
 console.log( 'test: disallowEmptyDocumentation (disabled)' );
 {
 	const result = bananaChecker(
@@ -51,6 +86,23 @@ console.log( 'test: disallowEmptyDocumentation (disabled)' );
 		function () {}
 	);
 	assert.strictEqual( result, PASS );
+}
+
+console.log( 'test: disallowUnusedDocumentation' );
+{
+	let errs = [];
+	const result = bananaChecker(
+		'test/disallowUnusedDocumentation',
+		{
+			disallowUnusedDocumentation: true
+		},
+		function ( err ) { errs.push( err ); }
+	);
+	assert.strictEqual( result, FAIL );
+	assert.deepStrictEqual( errs, [
+		'1 documented message is undefined.',
+		'Message "five-message-key" is documented but undefined.'
+	] );
 }
 
 console.log( 'test: disallowUnusedDocumentation (disabled)' );
@@ -65,6 +117,23 @@ console.log( 'test: disallowUnusedDocumentation (disabled)' );
 	assert.strictEqual( result, PASS );
 }
 
+console.log( 'test: requireCompleteMessageDocumentation' );
+{
+	let errs = [];
+	const result = bananaChecker(
+		'test/requireCompleteMessageDocumentation',
+		{
+			requireCompleteMessageDocumentation: true
+		},
+		function ( err ) { errs.push( err ); }
+	);
+	assert.strictEqual( result, FAIL );
+	assert.deepStrictEqual( errs, [
+		'1 message lacks documentation.',
+		'Message "third-message-key" lacks documentation.'
+	] );
+}
+
 console.log( 'test: requireCompleteMessageDocumentation (disabled)' );
 {
 	const result = bananaChecker(
@@ -75,6 +144,18 @@ console.log( 'test: requireCompleteMessageDocumentation (disabled)' );
 		function () {}
 	);
 	assert.strictEqual( result, PASS );
+}
+
+console.log( 'test: requireMetadata' );
+{
+	const result = bananaChecker(
+		'test/requireMetadata',
+		{
+			requireMetadata: true
+		},
+		function () {}
+	);
+	assert.strictEqual( result, FAIL );
 }
 
 console.log( 'test: requireMetadata (disabled)' );
@@ -104,6 +185,18 @@ console.log( 'test: skipIncompleteMessageDocumentation' );
 	assert.strictEqual( result, PASS );
 }
 
+console.log( 'test: requireLowerCase' );
+{
+	const result = bananaChecker(
+		'test/requireLowerCase/full',
+		{
+			requireLowerCase: true
+		},
+		function () {}
+	);
+	assert.strictEqual( result, FAIL );
+}
+
 console.log( 'test: requireLowerCase (disabled)' );
 {
 	// Allow any mixed case
@@ -130,7 +223,7 @@ console.log( 'test: requireLowerCase=initial' );
 	assert.strictEqual( result, PASS );
 }
 
-console.log( 'test: requireKeyPrefix (string)' );
+console.log( 'test: requireKeyPrefix (string, correct)' );
 {
 	const result = bananaChecker(
 		'test/requireKeyPrefix/single',
@@ -142,7 +235,19 @@ console.log( 'test: requireKeyPrefix (string)' );
 	assert.strictEqual( result, PASS );
 }
 
-console.log( 'test: requireKeyPrefix (array, single)' );
+console.log( 'test: requireKeyPrefix (string, wrong)' );
+{
+	const result = bananaChecker(
+		'test/requireKeyPrefix/single',
+		{
+			requireKeyPrefix: 'bob'
+		},
+		function () {}
+	);
+	assert.strictEqual( result, FAIL );
+}
+
+console.log( 'test: requireKeyPrefix (array/single, correct)' );
 {
 	const result = bananaChecker(
 		'test/requireKeyPrefix/single',
@@ -154,7 +259,7 @@ console.log( 'test: requireKeyPrefix (array, single)' );
 	assert.strictEqual( result, PASS );
 }
 
-console.log( 'test: requireKeyPrefix (array, multiple)' );
+console.log( 'test: requireKeyPrefix (array/multiple, correct)' );
 {
 	const result = bananaChecker(
 		'test/requireKeyPrefix/multiple',
