@@ -1,7 +1,7 @@
 {
   "name": "grunt-banana-checker",
   "version": "0.7.0",
-  "description": "A grunt checker for the \"banana\" JSON i18n system provided by MediaWiki and jquery.i18n",
+  "description": "Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.",
   "repository": {
     "type": "git",
     "url": "git://github.com/wikimedia/grunt-banana-checker.git"
@@ -12,6 +12,9 @@
     "checker",
     "banana"
   ],
+  "bin": {
+    "banana-checker": "src/cli.js"
+  },
   "files": [
     "src/",
     "tasks/"
@@ -21,13 +24,16 @@
     "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
   },
   "main": "src/banana.js",
+  "engines": {
+    "node": ">=6.5.0"
+  },
   "devDependencies": {
     "eslint-config-wikimedia": "0.10.0",
     "nyc": "13.3.0",
     "grunt": "1.0.3"
   },
   "scripts": {
-    "test": "nyc node test/test.js && eslint . && grunt banana"
+    "test": "nyc node test/test.js && eslint . && grunt banana && ./src/cli.js --requireLowerCase=0 test/simple/ test/requireLowerCase/full/"
   },
   "nyc": {
     "exclude": [
