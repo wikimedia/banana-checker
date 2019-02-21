@@ -13,12 +13,14 @@
     "banana"
   ],
   "files": [
+    "src/",
     "tasks/"
   ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
   },
+  "main": "src/banana.js",
   "devDependencies": {
     "eslint-config-wikimedia": "0.10.0",
     "grunt": "1.0.3"
