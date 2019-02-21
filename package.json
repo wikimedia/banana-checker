@@ -26,6 +26,6 @@
     "grunt": "1.0.3"
   },
   "scripts": {
-    "test": "eslint . && grunt banana"
+    "test": "eslint . && node test/test.js && grunt banana"
   }
 }

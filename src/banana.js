@@ -19,20 +19,17 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		sourceFile: 'en.json',
 		documentationFile: 'qqq.json',
 
-		requireMetadata: true,
-
-		requireCompleteMessageDocumentation: true,
-		disallowUnusedDocumentation: true,
-
 		disallowBlankTranslations: true,
 		disallowDuplicateTranslations: false,
+		disallowUnusedDocumentation: true,
 		disallowUnusedTranslations: false,
 
-		requireLowerCase: true,
-		requireKeyPrefix: [],
-
+		requireCompleteMessageDocumentation: true,
 		requireCompleteTranslationLanguages: [],
 		requireCompleteTranslationMessages: [],
+		requireKeyPrefix: [],
+		requireLowerCase: true,
+		requireMetadata: true,
 
 		skipIncompleteMessageDocumentation: []
 	}, options );

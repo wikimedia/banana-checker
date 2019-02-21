@@ -1,32 +1,22 @@
+const bananaChecker = require( '../src/banana.js' );
+
 /*!
- * A Grunt checker for the 'banana' format JSON i18n message files.
+ * Grunt task wrapper for the banana-checker
  */
-
-var bananaChecker = require( '../src/banana.js' );
-
-/* eslint-env node */
 module.exports = function ( grunt ) {
 	grunt.registerMultiTask( 'banana', function () {
-		var ok,
-			options = this.options(),
-			messageDirs = 0;
+		const options = this.options();
+		const messageDirs = this.filesSrc.length;
 
-		if ( this.filesSrc.length === 0 ) {
+		if ( messageDirs === 0 ) {
 			grunt.log.error( 'Target directory does not exist.' );
 			return false;
 		}
 
-		ok = true;
-
-		this.filesSrc.forEach( function ( dir ) {
-			ok = bananaChecker(
-				dir,
-				options,
-				grunt.log.error
-			) && ok;
-
-			messageDirs++;
-		} );
+		let ok = true;
+		for ( const dir of this.filesSrc ) {
+			ok = bananaChecker( dir, options, grunt.log.error ) && ok;
+		}
 
 		if ( !ok ) {
 			return false;
