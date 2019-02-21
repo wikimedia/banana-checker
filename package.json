@@ -23,9 +23,19 @@
   "main": "src/banana.js",
   "devDependencies": {
     "eslint-config-wikimedia": "0.10.0",
+    "nyc": "13.3.0",
     "grunt": "1.0.3"
   },
   "scripts": {
-    "test": "eslint . && node test/test.js && grunt banana"
+    "test": "nyc node test/test.js && eslint . && grunt banana"
+  },
+  "nyc": {
+    "exclude": [
+      "test"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ]
   }
 }
