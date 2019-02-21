@@ -71,13 +71,7 @@ module.exports = function ( grunt ) {
 			function keysNoMetadata( messageArray, type ) {
 				var keys, offset;
 
-				try {
-					keys = Object.keys( messageArray );
-				} catch ( e ) {
-					grunt.log.error( 'Loading ' + type + ' messages failed: "' + e + '".' );
-					ok = false;
-					throw e;
-				}
+				keys = Object.keys( messageArray );
 
 				offset = keys.indexOf( '@metadata' );
 				if ( offset === -1 ) {
