@@ -1,37 +1,119 @@
 [![NPM version](https://badge.fury.io/js/grunt-banana-checker.svg)](http://badge.fury.io/js/grunt-banana-checker) [![Build Status](https://travis-ci.org/wikimedia/grunt-banana-checker.svg?branch=master)](https://travis-ci.org/wikimedia/grunt-banana-checker)
 
-grunt-banana-checker
-====================
+# grunt-banana-checker
 
-> Task for checking JSON files for the "Banana" i18n system provided by MediaWiki and jquery.i18n.
+> Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.
 
-Getting started
---------------------
+By default, Banana checker asserts the following:
 
-If this is the first time you're using [Grunt](http://gruntjs.com/), the [getting started guide](http://gruntjs.com/getting-started) will show you how to get up and running.
+* The source and documentation files must exist and contain valid JSON.
+* Both files include a `@metadata` object.
+* Each defined source message is documentated.
+* Each defined documentation entry has a matching source message.
 
-Once you have that installed, with a [Gruntfile](http://gruntjs.com/sample-gruntfile) set for your code, you can install the plugin with:
+For all available options, see the [**Options** section](#options).
+
+You can use Banana checker [standalone](#command-line-interface), or as [Grunt plugin](#getting-started-grunt-plugin).
+
+## Getting started (Grunt plugin)
+
+To use this plugin, add it as a development dependency to your project:
 
 <pre lang=shell>
 npm install grunt-banana-checker --save-dev
 </pre>
 
-In your Gruntfile, add the line:
+Ensure your project has a Gruntfile.js file ([example file](http://gruntjs.com/sample-gruntfile)). Then, in Gruntfile.js, add the line:
 
 <pre lang=js>
 grunt.loadNpmTasks( 'grunt-banana-checker' );
 </pre>
 
-Running and configuring
---------------------
+### Configure the Grunt plugin
 
-_Run this task with the `grunt banana` command._
+In Gruntfile.js, add a configuation key for `banana` and set it to an empty object.
 
-This is designed to be very simple and not need configuring for the most common cases.
+We will use this object to declare which directory contains the interface messages. For example, to enable grunt-banana-checker for a single directory only, configure it like so:
 
-You can specify the targets and options for the task using the normal Grunt configuration – see Grunt's [guide on how to configure tasks](http://gruntjs.com/configuring-tasks) in general.
+<pre lang=js>
+grunt.initConfig( {
+	banana: {
+	    all: 'i18n/'
+	}
+} );
+</pre>
 
-### Options
+You can also configure multiple directories, like so:
+
+<pre lang=js>
+grunt.initConfig( {
+	banana: {
+	    core: 'languages/i18n/',
+	    installer: 'includes/installer/i18n/'
+	}
+} );
+</pre>
+
+You can also use globbing patterns and/or arrays of directories, like so:
+
+<pre lang=js>
+grunt.initConfig( {
+	banana: {
+	    all: 'modules/ve-{mw,wmf}/i18n/'
+	}
+} );
+</pre>
+
+For a full list of supported ways of defining the target directory of a Grunt plugin, see [Configuring tasks](https://gruntjs.com/configuring-tasks) on gruntjs.com.
+
+To customise [the **options** for Banana checker](#Options), define your target directory as an object instead of a string, with `src` and `options` properties, like so:
+
+<pre lang=js>
+grunt.initConfig( {
+	banana: {
+		all: {
+			src: 'i18n/',
+			options: {
+				sourceFile: 'messages.json',
+				documentationFile: 'documentation.json'
+			}
+		}
+	}
+} );
+</pre>
+
+For all available options, see the [**Options** section](#Options).
+
+## Command-line
+
+The Banana checker also offers a command-line interface.
+
+<pre lang=shell>
+npm install grunt-banana-checker --save-dev
+</pre>
+
+To use Banana checker as part of your test run, refer to the `banana-checker`
+program from the `scripts.test` property in your `package.json` file.
+
+<pre lang=js>
+{
+	"scripts": {
+		"test": "banana-checker i18n/"
+	}
+}
+</pre>
+
+To set custom options, pass parameters as `--key=value` pairs. For example:
+
+<pre lang=shell>
+npx banana-checker --requireKeyPrefix="x-" i18n/
+</pre>
+
+* For boolean options, use the valus `0`, `1`, `true`, or `false`.
+* Quotes are allowed, but not required.
+* For options that allow multiple values, separate values by comma. Like `--key=one,two`.
+
+## Options
 
 For edge cases, you can set some path options:
 
@@ -116,42 +198,3 @@ Default value: `[]`
 Example value: `[ 'first-message-key', 'third-message-key' ]`
 
 Messages on which to fail if missing in any provided language.
-
-
-Example uses
---------------------
-
-[OOjs UI](https://www.mediawiki.org/wiki/VisualEditor) uses this on [a single directory of messages](https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/Gruntfile.js):
-
-<pre lang=js>
-banana: {
-    all: 'i18n/'
-}
-</pre>
-
-[VisualEditor](https://www.mediawiki.org/wiki/VisualEditor)'s MediaWiki extension uses this on [two directories as a single test](https://phabricator.wikimedia.org/diffusion/EVED/browse/master/Gruntfile.js):
-
-<pre lang=js>
-banana: {
-    all: 'modules/ve-{mw,wmf}/i18n/'
-}
-</pre>
-
-[MediaWiki](https://www.mediawiki.org/wiki/MediaWiki) uses this on [two directories as different tests](https://phabricator.wikimedia.org/source/mediawiki/browse/master/Gruntfile.js) – one for the main software and another for the installer:
-
-<pre lang=js>
-banana: {
-    core: 'languages/i18n/',
-    installer: 'includes/installer/i18n/'
-}
-</pre>
-
-Checks run
-----------
-
-* The source and documentation files both exist, and are both valid JSON.
-* Both source and documentation include a "@metadata" object.
-    - (Note no parsing is done of the metadata objects.)
-* Each defined source message has a matching defined documentation message.
-    - (Note no parsing is done of the message definitions or their documentation, including if they are simply the blank string "".)
-* Each defined documentation message has a matching defined source message.
