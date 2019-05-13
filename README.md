@@ -1,6 +1,6 @@
-[![NPM version](https://badge.fury.io/js/grunt-banana-checker.svg)](http://badge.fury.io/js/grunt-banana-checker) [![Build Status](https://travis-ci.org/wikimedia/grunt-banana-checker.svg?branch=master)](https://travis-ci.org/wikimedia/grunt-banana-checker)
+[![NPM version](https://badge.fury.io/js/grunt-banana-checker.svg)](http://badge.fury.io/js/grunt-banana-checker) [![Build Status](https://travis-ci.org/wikimedia/banana-checker.svg?branch=master)](https://travis-ci.org/wikimedia/banana-checker)
 
-# grunt-banana-checker
+# banana-checker
 
 > Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.
 
