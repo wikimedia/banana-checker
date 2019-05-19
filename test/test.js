@@ -129,8 +129,8 @@ console.log( 'test: requireCompleteMessageDocumentation' );
 	);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
-		'1 message lacks documentation.',
-		'Message "third-message-key" lacks documentation.'
+		'1 message lacks documentation in qqq.json.',
+		'Message "third-message-key" lacks documentation in qqq.json.'
 	] );
 }
 
