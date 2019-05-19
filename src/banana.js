@@ -183,11 +183,11 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			ok = false;
 
 			logErr(
-				count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation.'
+				count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation in qqq.json.'
 			);
 
 			sourceMessageMissing.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" lacks documentation.' );
+				logErr( 'Message "' + message + '" lacks documentation in qqq.json.' );
 			} );
 		}
 	}
