@@ -66,4 +66,4 @@ if ( !result ) {
 	process.exit( 1 );
 }
 
-console.log( 'Checked ' + dirs.length + ' message ' + ( dirs.length > 1 ? 'directories' : 'directory' ) + '.' );
+console.log( `Checked ${dirs.length} message director${( dirs.length > 1 ? 'ies' : 'y' )}.` );

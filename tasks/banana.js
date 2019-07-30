@@ -22,6 +22,6 @@ module.exports = function ( grunt ) {
 			return false;
 		}
 
-		grunt.log.ok( messageDirs + ' message ' + ( messageDirs > 1 ? 'directories' : 'directory' ) + ' checked.' );
+		grunt.log.ok( `${messageDirs} message director${( messageDirs > 1 ? 'ries' : 'y' )} checked.` );
 	} );
 };
