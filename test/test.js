@@ -61,14 +61,14 @@ console.log( 'test: files not found' );
 
 console.log( 'test: disallowEmptyDocumentation' );
 {
-	const errs = [];
-	const result = bananaChecker(
-		'test/disallowEmptyDocumentation',
-		{
-			disallowEmptyDocumentation: true
-		},
-		function ( err ) { errs.push( err ); }
-	);
+	const errs = [],
+		result = bananaChecker(
+			'test/disallowEmptyDocumentation',
+			{
+				disallowEmptyDocumentation: true
+			},
+			function ( err ) { errs.push( err ); }
+		);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
 		'1 documented message is blank.',
@@ -90,14 +90,14 @@ console.log( 'test: disallowEmptyDocumentation (disabled)' );
 
 console.log( 'test: disallowUnusedDocumentation' );
 {
-	const errs = [];
-	const result = bananaChecker(
-		'test/disallowUnusedDocumentation',
-		{
-			disallowUnusedDocumentation: true
-		},
-		function ( err ) { errs.push( err ); }
-	);
+	const errs = [],
+		result = bananaChecker(
+			'test/disallowUnusedDocumentation',
+			{
+				disallowUnusedDocumentation: true
+			},
+			function ( err ) { errs.push( err ); }
+		);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
 		'1 documented message is undefined.',
@@ -119,14 +119,14 @@ console.log( 'test: disallowUnusedDocumentation (disabled)' );
 
 console.log( 'test: requireCompleteMessageDocumentation' );
 {
-	const errs = [];
-	const result = bananaChecker(
-		'test/requireCompleteMessageDocumentation',
-		{
-			requireCompleteMessageDocumentation: true
-		},
-		function ( err ) { errs.push( err ); }
-	);
+	const errs = [],
+		result = bananaChecker(
+			'test/requireCompleteMessageDocumentation',
+			{
+				requireCompleteMessageDocumentation: true
+			},
+			function ( err ) { errs.push( err ); }
+		);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
 		'1 message lacks documentation in qqq.json.',
