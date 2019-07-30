@@ -28,9 +28,9 @@
     "node": ">=6.5.0"
   },
   "devDependencies": {
-    "eslint-config-wikimedia": "0.10.0",
+    "eslint-config-wikimedia": "0.13.1",
     "nyc": "13.3.0",
-    "grunt": "1.0.3"
+    "grunt": "1.0.4"
   },
   "scripts": {
     "test": "nyc node test/test.js && eslint . && grunt banana && ./src/cli.js --requireLowerCase=0 test/simple/ test/requireLowerCase/full/"

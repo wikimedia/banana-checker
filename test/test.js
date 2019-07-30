@@ -61,7 +61,7 @@ console.log( 'test: files not found' );
 
 console.log( 'test: disallowEmptyDocumentation' );
 {
-	let errs = [];
+	const errs = [];
 	const result = bananaChecker(
 		'test/disallowEmptyDocumentation',
 		{
@@ -90,7 +90,7 @@ console.log( 'test: disallowEmptyDocumentation (disabled)' );
 
 console.log( 'test: disallowUnusedDocumentation' );
 {
-	let errs = [];
+	const errs = [];
 	const result = bananaChecker(
 		'test/disallowUnusedDocumentation',
 		{
@@ -119,7 +119,7 @@ console.log( 'test: disallowUnusedDocumentation (disabled)' );
 
 console.log( 'test: requireCompleteMessageDocumentation' );
 {
-	let errs = [];
+	const errs = [];
 	const result = bananaChecker(
 		'test/requireCompleteMessageDocumentation',
 		{
