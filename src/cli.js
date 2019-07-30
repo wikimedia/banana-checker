@@ -25,6 +25,7 @@ for ( const param of params ) {
 		case 'disallowDuplicateTranslations':
 		case 'disallowUnusedDocumentation':
 		case 'disallowUnusedTranslations':
+		case 'ignoreMissingBlankTranslations':
 		case 'requireCompleteMessageDocumentation':
 		case 'requireLowerCase':
 		case 'requireMetadata':
