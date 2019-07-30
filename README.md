@@ -198,3 +198,9 @@ Default value: `[]`
 Example value: `[ 'first-message-key', 'third-message-key' ]`
 
 Messages on which to fail if missing in any provided language.
+
+### ignoreMissingBlankTranslations
+Type: `boolean`
+Default value: `true`
+
+Whether to ignore missing translations whose original string is blank.
