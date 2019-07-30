@@ -1,6 +1,3 @@
 {
-  "extends": "wikimedia/server",
-  "rules": {
-    "prefer-template": "off"
-  }
+  "extends": "wikimedia/server"
 }

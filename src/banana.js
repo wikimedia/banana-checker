@@ -56,7 +56,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		try {
 			messageArray = require( path.resolve( dir, filename ) );
 		} catch ( e ) {
-			logErr( 'Loading ' + type + ' messages failed: "' + e + '".' );
+			logErr( `Loading ${type} messages failed: "${e}".` );
 			ok = false;
 			throw e;
 		}
@@ -72,7 +72,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		offset = keys.indexOf( '@metadata' );
 		if ( offset === -1 ) {
 			if ( options.requireMetadata ) {
-				logErr( 'No metadata block in the ' + type + ' messages file.' );
+				logErr( `No metadata block in the ${type} messages file.` );
 				ok = false;
 			}
 		} else {
@@ -189,12 +189,10 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		if ( count > 0 ) {
 			ok = false;
 
-			logErr(
-				count + ' message' + ( count > 1 ? 's lack' : ' lacks' ) + ' documentation in qqq.json.'
-			);
+			logErr( `${count} message${( count > 1 ? 's lack' : ' lacks' )} documentation in qqq.json.` );
 
 			sourceMessageMissing.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" lacks documentation in qqq.json.' );
+				logErr( `Message "${message}" lacks documentation in qqq.json.` );
 			} );
 		}
 	}
@@ -204,12 +202,10 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		if ( count > 0 ) {
 			ok = false;
 
-			logErr(
-				count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' blank.'
-			);
+			logErr( `${count} documented message${( count > 1 ? 's are' : ' is' )} blank.` );
 
 			documentationMessageBlanks.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" is documented with a blank string.' );
+				logErr( `Message "${message}" is documented with a blank string.` );
 			} );
 		}
 	}
@@ -219,20 +215,16 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		ok = false;
 
 		if ( options.requireLowerCase === 'initial' ) {
-			logErr(
-				count + ' message' + ( count > 1 ? 's do' : ' does' ) + ' not start with a lowercase character.'
-			);
+			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with a lowercase character.` );
 
 			sourceMessageWrongCase.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" should start with a lowercase character.' );
+				logErr( `Message "${message}" should start with a lowercase character.` );
 			} );
 		} else {
-			logErr(
-				count + ' message' + ( count > 1 ? 's are' : ' is' ) + ' not wholly lowercase.'
-			);
+			logErr( `${count} message${( count > 1 ? 's are' : ' is' )} not wholly lowercase.` );
 
 			sourceMessageWrongCase.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" should be in lowercase.' );
+				logErr( `Message "${message}" should be in lowercase.` );
 			} );
 		}
 	}
@@ -242,20 +234,16 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		ok = false;
 
 		if ( options.requireKeyPrefix.length === 1 ) {
-			logErr(
-				count + ' message' + ( count > 1 ? 's do' : ' does' ) + ' not start with the required prefix "' + options.requireKeyPrefix[ 0 ] + '".'
-			);
+			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
 
 			sourceMessageWrongPrefix.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" should start with the required prefix "' + options.requireKeyPrefix[ 0 ] + '".' );
+				logErr( `Message "${message}" should start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
 			} );
 		} else {
-			logErr(
-				count + ' message' + ( count > 1 ? 's do' : ' does' ) + ' not start with any of the required prefices.'
-			);
+			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with any of the required prefices.'` );
 
 			sourceMessageWrongPrefix.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" should start with one of the required prefices.' );
+				logErr( `Message "${message}" should start with one of the required prefices.` );
 			} );
 		}
 	}
@@ -265,12 +253,10 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		if ( count > 0 ) {
 			ok = false;
 
-			logErr(
-				count + ' documented message' + ( count > 1 ? 's are' : ' is' ) + ' undefined.'
-			);
+			logErr( `${count} documented message${( count > 1 ? 's are' : ' is' )} undefined.` );
 
 			documentationMessageKeys.forEach( function ( message ) {
-				logErr( 'Message "' + message + '" is documented but undefined.' );
+				logErr( `Message "${message}" is documented but undefined.` );
 			} );
 		}
 	}
@@ -285,12 +271,9 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			count = translatedData[ index ].blank.length;
 			if ( count > 0 ) {
 				ok = false;
-				logErr(
-					'The "' + index + '" translation has ' + count + ' blank translation' +
-						( count > 1 ? 's' : '' ) + ':'
-				);
+				logErr( `The "${index}" translation has ${count} blank translation${( count > 1 ? 's' : '' )}:` );
 				translatedData[ index ].blank.forEach( function ( message ) {
-					logErr( 'The translation of "' + message + '" is blank.' );
+					logErr( `The translation of "${message}" is blank.` );
 				} );
 			}
 		}
@@ -299,12 +282,9 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			count = translatedData[ index ].duplicate.length;
 			if ( count > 0 ) {
 				ok = false;
-				logErr(
-					'The "' + index + '" translation has ' + count + ' duplicate translation' +
-						( count > 1 ? 's' : '' ) + ':'
-				);
+				logErr( `The "${index}" translation has ${count} duplicate translation${( count > 1 ? 's' : '' )}:` );
 				translatedData[ index ].duplicate.forEach( function ( message ) {
-					logErr( 'The translation of "' + message + '" duplicates the primary message.' );
+					logErr( `The translation of "${message}" duplicates the primary message.` );
 				} );
 			}
 		}
@@ -313,13 +293,9 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			count = translatedData[ index ].unused.length;
 			if ( count > 0 ) {
 				ok = false;
-				logErr(
-					'The "' + index + '" translation has ' + count + ' unused translation' +
-						( count > 1 ? 's' : '' ) + ':'
-				);
-
+				logErr( `The "${index}" translation has ${count} unused translation${( count > 1 ? 's' : '' )}:` );
 				translatedData[ index ].unused.forEach( function ( message ) {
-					logErr( 'The translation of "' + message + '" is unused.' );
+					logErr( `The translation of "${message}" is unused.` );
 				} );
 			}
 		}
@@ -339,10 +315,10 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			count = translatedData[ index ].missing.length;
 			if ( count > 0 ) {
 				ok = false;
-				logErr( 'The "' + index + '" translation has ' + count + ' missing translation' + ( count > 1 ? 's' : '' ) + ':' );
+				logErr( `The "${index}" translation has ${count} missing translation${( count > 1 ? 's' : '' )}:` );
 
 				translatedData[ index ].missing.forEach( function ( message ) {
-					logErr( 'The translation of "' + message + '" is missing.' );
+					logErr( `The translation of "${message}" is missing.` );
 				} );
 			}
 		}
@@ -356,12 +332,16 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			}
 
 			for ( message in translatedData[ index ].missing ) {
-				// eslint-disable-next-line no-prototype-builtins
-				if ( !translatedData[ index ].missing.hasOwnProperty( sourceMessageKeys[ message ] ) ) {
+				if (
+					// eslint-disable-next-line no-prototype-builtins
+					!translatedData[ index ].missing.hasOwnProperty( sourceMessageKeys[ message ] )
+				) {
 					continue;
 				}
 
-				offset = options.requireCompleteTranslationMessages.indexOf( sourceMessageKeys[ message ] );
+				offset = options.requireCompleteTranslationMessages.indexOf(
+					sourceMessageKeys[ message ]
+				);
 
 				if ( offset === -1 ) {
 					translatedData[ index ].missing.splice( offset, 1 );
@@ -371,10 +351,10 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			count = translatedData[ index ].missing.length;
 			if ( count > 0 ) {
 				ok = false;
-				logErr( 'The "' + index + '" translation is missing ' + count + ' required message' + ( count > 1 ? 's' : '' ) + ':' );
+				logErr( `The "${index}" translation is missing ${count} required message{( count > 1 ? 's' : '' )}:` );
 
 				translatedData[ index ].missing.forEach( function ( message ) {
-					logErr( 'The required message "' + message + '" is missing.' );
+					logErr( `The required message "${message}" is missing.` );
 				} );
 			}
 		}
