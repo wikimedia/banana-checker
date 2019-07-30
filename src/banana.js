@@ -23,6 +23,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		disallowDuplicateTranslations: false,
 		disallowUnusedDocumentation: true,
 		disallowUnusedTranslations: false,
+		ignoreMissingBlankTranslations: true,
 
 		requireCompleteMessageDocumentation: true,
 		requireCompleteTranslationLanguages: [],
@@ -122,6 +123,12 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if ( languageMessages[ message ].trim() === '' ) {
 				blanks.push( message );
 			}
+		}
+
+		if ( options.ignoreMissingBlankTranslations ) {
+			missing = missing.filter( function ( message ) {
+				return sourceMessages[ message ] !== '';
+			} );
 		}
 
 		translatedData[ language ] = {
