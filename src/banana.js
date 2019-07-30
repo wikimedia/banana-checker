@@ -97,8 +97,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 
 	translatedFiles.forEach( function ( languageFile ) {
 		var language = languageFile.match( jsonFilenameRegex )[ 1 ],
-			languageMesages = messages( languageFile, language ),
-			keys = keysNoMetadata( languageMesages, language ),
+			languageMessages = messages( languageFile, language ),
+			keys = keysNoMetadata( languageMessages, language ),
 			blanks = [],
 			duplicates = [],
 			unuseds = [],
@@ -108,7 +108,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			message = keys[ index ];
 
 			if ( missing.indexOf( message ) !== -1 ) {
-				if ( languageMesages[ message ] === sourceMessages[ message ] ) {
+				if ( languageMessages[ message ] === sourceMessages[ message ] ) {
 					duplicates.push( message );
 				}
 				missing.splice( missing.indexOf( message ), 1 );
@@ -116,16 +116,16 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 				unuseds.push( message );
 			}
 
-			if ( typeof languageMesages[ message ] !== 'string' ) {
+			if ( typeof languageMessages[ message ] !== 'string' ) {
 				continue;
 			}
-			if ( languageMesages[ message ].trim() === '' ) {
+			if ( languageMessages[ message ].trim() === '' ) {
 				blanks.push( message );
 			}
 		}
 
 		translatedData[ language ] = {
-			messages: languageMesages,
+			messages: languageMessages,
 			keys: keys,
 			blank: blanks,
 			duplicate: duplicates,
