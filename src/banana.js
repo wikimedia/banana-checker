@@ -103,10 +103,13 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			blanks = [],
 			duplicates = [],
 			unuseds = [],
-			missing = sourceMessageKeys.slice( 0 );
+			missing = sourceMessageKeys.slice( 0 ),
+			unusedParameters = [],
+			stack, originalParameters;
 
 		for ( index in keys ) {
 			message = keys[ index ];
+			originalParameters = sourceMessages[ message ].match( /\$\d/g );
 
 			if ( missing.indexOf( message ) !== -1 ) {
 				if ( languageMessages[ message ] === sourceMessages[ message ] ) {
@@ -115,6 +118,17 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 				missing.splice( missing.indexOf( message ), 1 );
 			} else {
 				unuseds.push( message );
+			}
+
+			if ( originalParameters ) {
+				// eslint-disable-next-line no-loop-func
+				stack = originalParameters.filter( function ( originalParameter ) {
+					return languageMessages[ message ].indexOf( originalParameter ) === -1;
+				} );
+
+				if ( stack.length ) {
+					unusedParameters.push( { message, stack } );
+				}
 			}
 
 			if ( typeof languageMessages[ message ] !== 'string' ) {
@@ -137,7 +151,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			blank: blanks,
 			duplicate: duplicates,
 			unused: unuseds,
-			missing: missing
+			missing: missing,
+			unusedParameters: unusedParameters
 		};
 	} );
 
@@ -300,6 +315,26 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			}
 		}
 
+		if ( options.requireCompletelyUsedParameters ) {
+			count = translatedData[ index ].unusedParameters.length;
+			if ( count > 0 ) {
+				ok = false;
+				logErr( `The "${index}" translation has ${count} message${( count > 1 ? 's' : '' )} which fail${( count > 1 ? 's' : '' )} to use all parameters:` );
+				// eslint-disable-next-line no-loop-func
+				translatedData[ index ].unusedParameters.forEach( function ( report ) {
+					switch ( report.stack.length ) {
+						case 1:
+							logErr( `The translation of "${report.message}" fails to use the parameter "${report.stack[ 0 ]}".` );
+							break;
+						case 2:
+							logErr( `The translation of "${report.message}" fails to use the parameters "${report.stack[ 0 ]}" and "${report.stack[ 1 ]}" .` );
+							break;
+						default:
+							logErr( `The translation of "${report.message}" fails to use the parameters "${report.stack.join( '", "' )}".` );
+					}
+				} );
+			}
+		}
 	}
 
 	if ( options.requireCompleteTranslationLanguages.length ) {
