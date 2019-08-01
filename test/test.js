@@ -117,6 +117,28 @@ console.log( 'test: disallowUnusedDocumentation (disabled)' );
 	assert.strictEqual( result, PASS );
 }
 
+console.log( 'test: requireCompletelyUsedParameters' );
+{
+	const errs = [],
+		result = bananaChecker(
+			'test/requireCompletelyUsedParameters',
+			{
+				requireCompletelyUsedParameters: true
+			},
+			function ( err ) { errs.push( err ); }
+		);
+
+	assert.strictEqual( result, FAIL );
+	assert.deepStrictEqual( errs, [
+		'The "de" translation has 1 message which fail to use all parameters:',
+		'The translation of "second-message-key" fails to use the parameters "$2" and "$1" .',
+		'The "fr" translation has 3 messages which fails to use all parameters:',
+		'The translation of "first-message-key" fails to use the parameter "$2".',
+		'The translation of "second-message-key" fails to use the parameter "$1".',
+		'The translation of "third-message-key" fails to use the parameters "$2", "$3", "$4".'
+	] );
+}
+
 console.log( 'test: requireCompleteMessageDocumentation' );
 {
 	const errs = [],

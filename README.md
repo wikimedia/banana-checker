@@ -185,6 +185,12 @@ Default value: `false`
 
 Whether to fail if any translated message isn't in the primary file.
 
+#### requireCompletelyUsedParameters
+Type: `boolean`
+Default value: `false`
+
+Whether to fail if any translated message fails to use a parameter used in the primary message.
+
 #### requireCompleteTranslationLanguages
 Type: `string[]`
 Default value: `[]`
