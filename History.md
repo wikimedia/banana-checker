@@ -1,3 +1,15 @@
+v0.8.0 / 2019-08-20
+==================
+
+* Allow ignoring missing translations of blank source messages (Roan Kattouw)
+* Allow requiring each parameter to be used in translations (James D. Forrester)
+* Fix "languageMesages" typo (James D. Forrester)
+* Make "lacks documentation" message more specific (Thiemo Kreuz)
+* code: Commafy chained consts and fix directories (James D. Forrester)
+* build: Upgrade eslint-config-wikimedia to 0.13.1 (James D. Forrester)
+* build: Upgrade nyc from 13.3.0 to 14.1.1 (James D. Forrester)
+* build: Use template literals (James D. Forrester)
+
 v0.7.0 / 2019-01-08
 ==================
 
