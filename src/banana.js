@@ -109,7 +109,11 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 
 		for ( index in keys ) {
 			message = keys[ index ];
-			originalParameters = sourceMessages[ message ].match( /\$\d/g );
+			if ( sourceMessages[ message ] === undefined ) {
+				originalParameters = undefined;
+			} else {
+				originalParameters = sourceMessages[ message ].match( /\$\d/g );
+			}
 
 			if ( missing.indexOf( message ) !== -1 ) {
 				if ( languageMessages[ message ] === sourceMessages[ message ] ) {
