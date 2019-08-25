@@ -110,7 +110,10 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		for ( index in keys ) {
 			message = keys[ index ];
 			if ( sourceMessages[ message ] === undefined ) {
-				originalParameters = undefined;
+				// An unused translation. This happens on commits that remove messages, 
+				// which are typically removed from en.json and qqq.json, letting
+				// translations be removed by a localisation update instead. 
+				originalParameters = null;
 			} else {
 				originalParameters = sourceMessages[ message ].match( /\$\d/g );
 			}
