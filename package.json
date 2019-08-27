@@ -28,7 +28,7 @@
     "node": ">=6.5.0"
   },
   "devDependencies": {
-    "eslint-config-wikimedia": "0.13.1",
+    "eslint-config-wikimedia": "0.14.0",
     "nyc": "14.1.1",
     "grunt": "1.0.4"
   },
