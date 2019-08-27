@@ -1,3 +1,10 @@
+v0.8.1 / 2019-08-27
+==================
+
+* Fix uncaught error for translated message not defined in source (Alex Monk)
+* build: Upgrade eslint-config-wikimedia from 0.13.1 to 0.14.0 (James D. Forrester)
+* build(deps): bump eslint-utils from 1.4.0 to 1.4.2 (dependabot[bot])
+
 v0.8.0 / 2019-08-20
 ==================
 

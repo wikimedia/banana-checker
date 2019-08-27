@@ -1,6 +1,6 @@
 {
   "name": "grunt-banana-checker",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.",
   "repository": {
     "type": "git",
