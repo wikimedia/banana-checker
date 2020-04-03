@@ -30,7 +30,7 @@
   "devDependencies": {
     "eslint-config-wikimedia": "0.14.0",
     "nyc": "14.1.1",
-    "grunt": "1.0.4"
+    "grunt": "1.1.0"
   },
   "scripts": {
     "test": "nyc node test/test.js && eslint . && grunt banana && ./src/cli.js --requireLowerCase=0 test/simple/ test/requireLowerCase/full/"
