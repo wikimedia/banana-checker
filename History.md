@@ -1,3 +1,10 @@
+v0.9.0 / 2020-04-06
+==================
+
+* [BREAKING CHANGE] Drop support for node 6 (James D. Forrester)
+* build: Bump each devDependency to latest (James D. Forrester)
+* CI: Replace Travis with GitHub Actions (James D. Forrester)
+
 v0.8.1 / 2019-08-27
 ==================
 
