@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-/* eslint-disable no-console */
-
 // argv: 0 = bin/node, 1 = src/cli.js, 2... = params
 const params = process.argv.slice( 2 );
 const dirs = [];
