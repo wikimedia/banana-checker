@@ -4,9 +4,9 @@
   "description": "Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/wikimedia/grunt-banana-checker.git"
+    "url": "https://github.com/wikimedia/banana-checker.git"
   },
-  "homepage": "https://github.com/wikimedia/grunt-banana-checker",
+  "homepage": "https://github.com/wikimedia/banana-checker",
   "keywords": [
     "gruntplugin",
     "checker",
@@ -21,7 +21,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wikimedia/grunt-banana-checker/issues"
+    "url": "https://github.com/wikimedia/banana-checker/issues"
   },
   "main": "src/banana.js",
   "engines": {
