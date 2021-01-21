@@ -210,3 +210,15 @@ Type: `boolean`
 Default value: `true`
 
 Whether to ignore missing translations whose original string is blank.
+
+### allowLeadingWhitespace
+Type: `boolean`
+Default value: `true`
+
+Whether to ignore leading whitespace in original or translated messages.
+
+### allowTrailingWhitespace
+Type: `boolean`
+Default value: `true`
+
+Whether to ignore trailing whitespace in original or translated messages.

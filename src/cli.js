@@ -23,6 +23,8 @@ for ( const param of params ) {
 		case 'disallowDuplicateTranslations':
 		case 'disallowUnusedDocumentation':
 		case 'disallowUnusedTranslations':
+		case 'allowLeadingWhitespace':
+		case 'allowTrailingWhitespace':
 		case 'ignoreMissingBlankTranslations':
 		case 'requireCompleteMessageDocumentation':
 		case 'requireLowerCase':

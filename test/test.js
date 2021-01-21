@@ -291,3 +291,91 @@ console.log( 'test: requireKeyPrefix (array/multiple, correct)' );
 	);
 	assert.strictEqual( result, PASS );
 }
+
+console.log( 'test: allowLeadingWhitespace (enabled)' );
+{
+	const result = bananaChecker(
+		'test/allowLeadingWhitespace',
+		{
+			allowLeadingWhitespace: true
+		},
+		function () {}
+	);
+	assert.strictEqual( result, PASS );
+}
+
+console.log( 'test: allowLeadingWhitespace (disabled)' );
+{
+	const errs = [],
+		result = bananaChecker(
+			'test/allowLeadingWhitespace',
+			{
+				allowLeadingWhitespace: false
+			},
+			function ( err ) { errs.push( err ); }
+		);
+
+	assert.strictEqual( result, FAIL );
+	assert.deepStrictEqual( errs, [
+		'3 messages have leading whitespace:',
+		'Message "first-message-key" has leading whitespace',
+		'Message "second-message-key" has leading whitespace',
+		'Message "third-message-key" has leading whitespace',
+		'3 message documentations have leading whitespace:',
+		'Message documentation "first-message-key" has leading whitespace',
+		'Message documentation "second-message-key" has leading whitespace',
+		'Message documentation "third-message-key" has leading whitespace',
+		'The "de" translation has 3 translations with leading whitespace:',
+		'The translation of "first-message-key" has leading whitespace.',
+		'The translation of "second-message-key" has leading whitespace.',
+		'The translation of "third-message-key" has leading whitespace.',
+		'The "fr" translation has 3 translations with leading whitespace:',
+		'The translation of "first-message-key" has leading whitespace.',
+		'The translation of "second-message-key" has leading whitespace.',
+		'The translation of "third-message-key" has leading whitespace.'
+	] );
+}
+
+console.log( 'test: allowTrailingWhitespace (enabled)' );
+{
+	const result = bananaChecker(
+		'test/allowTrailingWhitespace',
+		{
+			allowTrailingWhitespace: true
+		},
+		function () {}
+	);
+	assert.strictEqual( result, PASS );
+}
+
+console.log( 'test: allowTrailingWhitespace (disabled)' );
+{
+	const errs = [],
+		result = bananaChecker(
+			'test/allowTrailingWhitespace',
+			{
+				allowTrailingWhitespace: false
+			},
+			function ( err ) { errs.push( err ); }
+		);
+
+	assert.strictEqual( result, FAIL );
+	assert.deepStrictEqual( errs, [
+		'3 messages have trailing whitespace:',
+		'Message "first-message-key" has trailing whitespace',
+		'Message "second-message-key" has trailing whitespace',
+		'Message "third-message-key" has trailing whitespace',
+		'3 message documentations have trailing whitespace:',
+		'Message documentation "first-message-key" has trailing whitespace',
+		'Message documentation "second-message-key" has trailing whitespace',
+		'Message documentation "third-message-key" has trailing whitespace',
+		'The "de" translation has 3 translations with trailing whitespace:',
+		'The translation of "first-message-key" has trailing whitespace.',
+		'The translation of "second-message-key" has trailing whitespace.',
+		'The translation of "third-message-key" has trailing whitespace.',
+		'The "fr" translation has 3 translations with trailing whitespace:',
+		'The translation of "first-message-key" has trailing whitespace.',
+		'The translation of "second-message-key" has trailing whitespace.',
+		'The translation of "third-message-key" has trailing whitespace.'
+	] );
+}

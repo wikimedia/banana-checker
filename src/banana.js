@@ -13,6 +13,9 @@ const fs = require( 'fs' );
  * @return {boolean} Success
  */
 module.exports = function bananaChecker( dir, options, logErr ) {
+
+	// Step 1: Read config and get set up.
+
 	let ok = true;
 
 	options = Object.assign( {
@@ -32,16 +35,17 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		requireLowerCase: true,
 		requireMetadata: true,
 
+		allowLeadingWhitespace: true,
+		allowTrailingWhitespace: true,
+
 		skipIncompleteMessageDocumentation: []
 	}, options );
 
 	const jsonFilenameRegex = /(.*)\.json$/;
+	const leadingWhitespaceRegex = /^\s/;
+	const trailingWhitespaceRegex = /\s$/;
+
 	const translatedData = {};
-	const documentationMessageBlanks = [];
-	let sourceMessageMissing = [];
-	let sourceMessageWrongCase = [];
-	let sourceMessageWrongPrefix = [];
-	let count = 0;
 
 	function messages( filename, type ) {
 		let messageArray;
@@ -91,6 +95,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		);
 	} );
 
+	// Step 2: Walk through files and check for failures.
+
 	translatedFiles.forEach( function ( languageFile ) {
 		const language = languageFile.match( jsonFilenameRegex )[ 1 ];
 		const languageMessages = messages( languageFile, language );
@@ -100,6 +106,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		const duplicates = [];
 		const unuseds = [];
 		const unusedParameters = [];
+		let leadingWhitespace = [];
+		let trailingWhitespace = [];
 
 		let missing = sourceMessageKeys.slice( 0 );
 		let stack, originalParameters;
@@ -142,6 +150,18 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			}
 		}
 
+		if ( !options.allowLeadingWhitespace ) {
+			leadingWhitespace = keys.filter( function ( message ) {
+				return leadingWhitespaceRegex.test( sourceMessages[ message ] );
+			} );
+		}
+
+		if ( !options.allowTrailingWhitespace ) {
+			trailingWhitespace = keys.filter( function ( message ) {
+				return trailingWhitespaceRegex.test( sourceMessages[ message ] );
+			} );
+		}
+
 		if ( options.ignoreMissingBlankTranslations ) {
 			missing = missing.filter( function ( messageName ) {
 				return sourceMessages[ messageName ] !== '';
@@ -155,10 +175,13 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			duplicate: duplicates,
 			unused: unuseds,
 			missing: missing,
-			unusedParameters: unusedParameters
+			unusedParameters: unusedParameters,
+			leadingWhitespace: leadingWhitespace,
+			trailingWhitespace: trailingWhitespace
 		};
 	} );
 
+	let sourceMessageWrongCase = [];
 	if ( options.requireLowerCase === 'initial' ) {
 		sourceMessageWrongCase = sourceMessageKeys.filter( function ( value ) {
 			return ( value !== '' && value[ 0 ] !== value[ 0 ].toLowerCase() );
@@ -169,6 +192,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		} );
 	}
 
+	let sourceMessageWrongPrefix = [];
 	if ( options.requireKeyPrefix.length ) {
 		if ( typeof options.requireKeyPrefix === 'string' ) {
 			options.requireKeyPrefix = [ options.requireKeyPrefix ];
@@ -180,6 +204,40 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		} );
 	}
 
+	let sourceMessageLeadingWhitespace = [];
+	let documentationMessageLeadingWhitespace = [];
+	if ( !options.allowLeadingWhitespace ) {
+		sourceMessageLeadingWhitespace = sourceMessageKeys.filter(
+			function ( message ) {
+				return leadingWhitespaceRegex.test( sourceMessages[ message ] );
+			}
+		);
+
+		documentationMessageLeadingWhitespace = documentationMessageKeys.filter(
+			function ( message ) {
+				return leadingWhitespaceRegex.test( documentationMessages[ message ] );
+			}
+		);
+	}
+
+	let sourceMessageTrailingWhitespace = [];
+	let documentationMessageTrailingWhitespace = [];
+	if ( !options.allowTrailingWhitespace ) {
+		sourceMessageTrailingWhitespace = sourceMessageKeys.filter(
+			function ( message ) {
+				return trailingWhitespaceRegex.test( sourceMessages[ message ] );
+			}
+		);
+
+		documentationMessageTrailingWhitespace = documentationMessageKeys.filter(
+			function ( message ) {
+				return trailingWhitespaceRegex.test( documentationMessages[ message ] );
+			}
+		);
+	}
+
+	let sourceMessageMissing = [];
+	const documentationMessageBlanks = [];
 	while ( sourceMessageKeys.length > 0 ) {
 		const message = sourceMessageKeys[ 0 ];
 
@@ -198,6 +256,9 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		sourceMessageKeys.splice( 0, 1 );
 	}
 
+	// Step 3: Go through failures and report them, based on config.
+
+	let count = 0;
 	if ( options.requireCompleteMessageDocumentation ) {
 		// Filter out any missing message that is OK to be skipped
 		sourceMessageMissing = sourceMessageMissing.filter( function ( value ) {
@@ -228,41 +289,45 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		}
 	}
 
-	count = sourceMessageWrongCase.length;
-	if ( count > 0 ) {
-		ok = false;
+	if ( options.requireLowerCase ) {
+		count = sourceMessageWrongCase.length;
+		if ( count > 0 ) {
+			ok = false;
 
-		if ( options.requireLowerCase === 'initial' ) {
-			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with a lowercase character.` );
+			if ( options.requireLowerCase === 'initial' ) {
+				logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with a lowercase character.` );
 
-			sourceMessageWrongCase.forEach( function ( messageName ) {
-				logErr( `Message "${messageName}" should start with a lowercase character.` );
-			} );
-		} else {
-			logErr( `${count} message${( count > 1 ? 's are' : ' is' )} not wholly lowercase.` );
+				sourceMessageWrongCase.forEach( function ( messageName ) {
+					logErr( `Message "${messageName}" should start with a lowercase character.` );
+				} );
+			} else {
+				logErr( `${count} message${( count > 1 ? 's are' : ' is' )} not wholly lowercase.` );
 
-			sourceMessageWrongCase.forEach( function ( messageName ) {
-				logErr( `Message "${messageName}" should be in lowercase.` );
-			} );
+				sourceMessageWrongCase.forEach( function ( messageName ) {
+					logErr( `Message "${messageName}" should be in lowercase.` );
+				} );
+			}
 		}
 	}
 
-	count = sourceMessageWrongPrefix.length;
-	if ( count > 0 ) {
-		ok = false;
+	if ( options.requireKeyPrefix.length ) {
+		count = sourceMessageWrongPrefix.length;
+		if ( count > 0 ) {
+			ok = false;
 
-		if ( options.requireKeyPrefix.length === 1 ) {
-			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
+			if ( options.requireKeyPrefix.length === 1 ) {
+				logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
 
-			sourceMessageWrongPrefix.forEach( function ( messageName ) {
-				logErr( `Message "${messageName}" should start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
-			} );
-		} else {
-			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with any of the required prefices.'` );
+				sourceMessageWrongPrefix.forEach( function ( messageName ) {
+					logErr( `Message "${messageName}" should start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
+				} );
+			} else {
+				logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with any of the required prefices.'` );
 
-			sourceMessageWrongPrefix.forEach( function ( messageName ) {
-				logErr( `Message "${messageName}" should start with one of the required prefices.` );
-			} );
+				sourceMessageWrongPrefix.forEach( function ( messageName ) {
+					logErr( `Message "${messageName}" should start with one of the required prefices.` );
+				} );
+			}
 		}
 	}
 
@@ -275,6 +340,46 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 
 			documentationMessageKeys.forEach( function ( messageName ) {
 				logErr( `Message "${messageName}" is documented but undefined.` );
+			} );
+		}
+	}
+
+	if ( !options.allowLeadingWhitespace ) {
+		count = sourceMessageLeadingWhitespace.length;
+		if ( count > 0 ) {
+			ok = false;
+			logErr( `${count} message${( count > 1 ? 's have' : ' has' )} leading whitespace:` );
+			sourceMessageLeadingWhitespace.forEach( function ( message ) {
+				logErr( `Message "${message}" has leading whitespace` );
+			} );
+		}
+
+		count = documentationMessageLeadingWhitespace.length;
+		if ( count > 0 ) {
+			ok = false;
+			logErr( `${count} message documentation${( count > 1 ? 's have' : ' has' )} leading whitespace:` );
+			documentationMessageLeadingWhitespace.forEach( function ( message ) {
+				logErr( `Message documentation "${message}" has leading whitespace` );
+			} );
+		}
+	}
+
+	if ( !options.allowTrailingWhitespace ) {
+		count = sourceMessageTrailingWhitespace.length;
+		if ( count > 0 ) {
+			ok = false;
+			logErr( `${count} message${( count > 1 ? 's have' : ' has' )} trailing whitespace:` );
+			sourceMessageTrailingWhitespace.forEach( function ( message ) {
+				logErr( `Message "${message}" has trailing whitespace` );
+			} );
+		}
+
+		count = documentationMessageTrailingWhitespace.length;
+		if ( count > 0 ) {
+			ok = false;
+			logErr( `${count} message documentation${( count > 1 ? 's have' : ' has' )} trailing whitespace:` );
+			documentationMessageTrailingWhitespace.forEach( function ( message ) {
+				logErr( `Message documentation "${message}" has trailing whitespace` );
 			} );
 		}
 	}
@@ -335,6 +440,28 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 						default:
 							logErr( `The translation of "${report.message}" fails to use the parameters "${report.stack.join( '", "' )}".` );
 					}
+				} );
+			}
+		}
+
+		if ( !options.allowLeadingWhitespace ) {
+			count = translatedData[ index ].leadingWhitespace.length;
+			if ( count > 0 ) {
+				ok = false;
+				logErr( `The "${index}" translation has ${count} translation${( count > 1 ? 's' : '' )} with leading whitespace:` );
+				translatedData[ index ].leadingWhitespace.forEach( function ( message ) {
+					logErr( `The translation of "${message}" has leading whitespace.` );
+				} );
+			}
+		}
+
+		if ( !options.allowTrailingWhitespace ) {
+			count = translatedData[ index ].trailingWhitespace.length;
+			if ( count > 0 ) {
+				ok = false;
+				logErr( `The "${index}" translation has ${count} translation${( count > 1 ? 's' : '' )} with trailing whitespace:` );
+				translatedData[ index ].trailingWhitespace.forEach( function ( message ) {
+					logErr( `The translation of "${message}" has trailing whitespace.` );
 				} );
 			}
 		}
