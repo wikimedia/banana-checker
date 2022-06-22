@@ -1,3 +1,4 @@
 {
-  "extends": "wikimedia/server"
+	"root": true,
+	"extends": "wikimedia/server"
 }

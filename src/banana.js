@@ -1,7 +1,7 @@
 'use strict';
 
-var path = require( 'path' );
-var fs = require( 'fs' );
+const path = require( 'path' );
+const fs = require( 'fs' );
 
 /**
  * Checker for the 'Banana' JSON-file format for interface messages.
@@ -13,7 +13,7 @@ var fs = require( 'fs' );
  * @return {boolean} Success
  */
 module.exports = function bananaChecker( dir, options, logErr ) {
-	var ok = true;
+	let ok = true;
 
 	options = Object.assign( {
 		sourceFile: 'en.json',
@@ -35,23 +35,20 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		skipIncompleteMessageDocumentation: []
 	}, options );
 
-	var message, index, offset,
-		// Source message data
-		sourceMessages, sourceMessageKeys,
-		// Documentation message data
-		documentationMessages, documentationMessageKeys,
-		// Translated message data
-		translatedFiles,
-		jsonFilenameRegex = /(.*)\.json$/,
-		translatedData = {},
-		documentationMessageBlanks = [],
-		sourceMessageMissing = [],
-		sourceMessageWrongCase = [],
-		sourceMessageWrongPrefix = [],
-		count = 0;
+	let message;
+	let index;
+	let offset;
+
+	const jsonFilenameRegex = /(.*)\.json$/;
+	const translatedData = {};
+	const documentationMessageBlanks = [];
+	let sourceMessageMissing = [];
+	let sourceMessageWrongCase = [];
+	let sourceMessageWrongPrefix = [];
+	let count = 0;
 
 	function messages( filename, type ) {
-		var messageArray;
+		let messageArray;
 
 		try {
 			messageArray = require( path.resolve( dir, filename ) );
@@ -65,30 +62,32 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 	}
 
 	function keysNoMetadata( messageArray, type ) {
-		var keys, offset;
+		const keys = Object.keys( messageArray );
 
-		keys = Object.keys( messageArray );
+		const keyOffset = keys.indexOf( '@metadata' );
 
-		offset = keys.indexOf( '@metadata' );
-		if ( offset === -1 ) {
+		if ( keyOffset === -1 ) {
 			if ( options.requireMetadata ) {
 				logErr( `No metadata block in the ${type} messages file.` );
 				ok = false;
 			}
 		} else {
-			keys.splice( offset, 1 );
+			keys.splice( keyOffset, 1 );
 		}
 
 		return keys;
 	}
 
-	sourceMessages = messages( options.sourceFile, 'source' );
-	sourceMessageKeys = keysNoMetadata( sourceMessages, 'source' );
+	// Source message data
+	const sourceMessages = messages( options.sourceFile, 'source' );
+	const sourceMessageKeys = keysNoMetadata( sourceMessages, 'source' );
 
-	documentationMessages = messages( options.documentationFile, 'documentation' );
-	documentationMessageKeys = keysNoMetadata( documentationMessages, 'documentation' );
+	// Documentation message data
+	const documentationMessages = messages( options.documentationFile, 'documentation' );
+	const documentationMessageKeys = keysNoMetadata( documentationMessages, 'documentation' );
 
-	translatedFiles = fs.readdirSync( dir ).filter( function ( value ) {
+	// Translated message data
+	const translatedFiles = fs.readdirSync( dir ).filter( function ( value ) {
 		return (
 			value !== options.sourceFile &&
 			value !== options.documentationFile &&
@@ -97,15 +96,17 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 	} );
 
 	translatedFiles.forEach( function ( languageFile ) {
-		var language = languageFile.match( jsonFilenameRegex )[ 1 ],
-			languageMessages = messages( languageFile, language ),
-			keys = keysNoMetadata( languageMessages, language ),
-			blanks = [],
-			duplicates = [],
-			unuseds = [],
-			missing = sourceMessageKeys.slice( 0 ),
-			unusedParameters = [],
-			stack, originalParameters;
+		const language = languageFile.match( jsonFilenameRegex )[ 1 ];
+		const languageMessages = messages( languageFile, language );
+		const keys = keysNoMetadata( languageMessages, language );
+
+		const blanks = [];
+		const duplicates = [];
+		const unuseds = [];
+		const unusedParameters = [];
+
+		let missing = sourceMessageKeys.slice( 0 );
+		let stack, originalParameters;
 
 		for ( index in keys ) {
 			message = keys[ index ];
@@ -118,7 +119,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 				originalParameters = sourceMessages[ message ].match( /\$\d/g );
 			}
 
-			if ( missing.indexOf( message ) !== -1 ) {
+			if ( missing.includes( message ) ) {
 				if ( languageMessages[ message ] === sourceMessages[ message ] ) {
 					duplicates.push( message );
 				}
@@ -130,7 +131,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if ( originalParameters ) {
 				// eslint-disable-next-line no-loop-func
 				stack = originalParameters.filter( function ( originalParameter ) {
-					return languageMessages[ message ].indexOf( originalParameter ) === -1;
+					return !languageMessages[ message ].includes( originalParameter );
 				} );
 
 				if ( stack.length ) {
@@ -147,8 +148,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		}
 
 		if ( options.ignoreMissingBlankTranslations ) {
-			missing = missing.filter( function ( message ) {
-				return sourceMessages[ message ] !== '';
+			missing = missing.filter( function ( messageName ) {
+				return sourceMessages[ messageName ] !== '';
 			} );
 		}
 
@@ -205,7 +206,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 	if ( options.requireCompleteMessageDocumentation ) {
 		// Filter out any missing message that is OK to be skipped
 		sourceMessageMissing = sourceMessageMissing.filter( function ( value ) {
-			return options.skipIncompleteMessageDocumentation.indexOf( value ) === -1;
+			return !options.skipIncompleteMessageDocumentation.includes( value );
 		} );
 		count = sourceMessageMissing.length;
 		if ( count > 0 ) {
@@ -213,8 +214,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 
 			logErr( `${count} message${( count > 1 ? 's lack' : ' lacks' )} documentation in qqq.json.` );
 
-			sourceMessageMissing.forEach( function ( message ) {
-				logErr( `Message "${message}" lacks documentation in qqq.json.` );
+			sourceMessageMissing.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" lacks documentation in qqq.json.` );
 			} );
 		}
 	}
@@ -226,8 +227,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 
 			logErr( `${count} documented message${( count > 1 ? 's are' : ' is' )} blank.` );
 
-			documentationMessageBlanks.forEach( function ( message ) {
-				logErr( `Message "${message}" is documented with a blank string.` );
+			documentationMessageBlanks.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" is documented with a blank string.` );
 			} );
 		}
 	}
@@ -239,14 +240,14 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		if ( options.requireLowerCase === 'initial' ) {
 			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with a lowercase character.` );
 
-			sourceMessageWrongCase.forEach( function ( message ) {
-				logErr( `Message "${message}" should start with a lowercase character.` );
+			sourceMessageWrongCase.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" should start with a lowercase character.` );
 			} );
 		} else {
 			logErr( `${count} message${( count > 1 ? 's are' : ' is' )} not wholly lowercase.` );
 
-			sourceMessageWrongCase.forEach( function ( message ) {
-				logErr( `Message "${message}" should be in lowercase.` );
+			sourceMessageWrongCase.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" should be in lowercase.` );
 			} );
 		}
 	}
@@ -258,14 +259,14 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		if ( options.requireKeyPrefix.length === 1 ) {
 			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
 
-			sourceMessageWrongPrefix.forEach( function ( message ) {
-				logErr( `Message "${message}" should start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
+			sourceMessageWrongPrefix.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" should start with the required prefix "${options.requireKeyPrefix[ 0 ]}".` );
 			} );
 		} else {
 			logErr( `${count} message${( count > 1 ? 's do' : ' does' )} not start with any of the required prefices.'` );
 
-			sourceMessageWrongPrefix.forEach( function ( message ) {
-				logErr( `Message "${message}" should start with one of the required prefices.` );
+			sourceMessageWrongPrefix.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" should start with one of the required prefices.` );
 			} );
 		}
 	}
@@ -277,8 +278,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 
 			logErr( `${count} documented message${( count > 1 ? 's are' : ' is' )} undefined.` );
 
-			documentationMessageKeys.forEach( function ( message ) {
-				logErr( `Message "${message}" is documented but undefined.` );
+			documentationMessageKeys.forEach( function ( messageName ) {
+				logErr( `Message "${messageName}" is documented but undefined.` );
 			} );
 		}
 	}
@@ -294,8 +295,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if ( count > 0 ) {
 				ok = false;
 				logErr( `The "${index}" translation has ${count} blank translation${( count > 1 ? 's' : '' )}:` );
-				translatedData[ index ].blank.forEach( function ( message ) {
-					logErr( `The translation of "${message}" is blank.` );
+				translatedData[ index ].blank.forEach( function ( messageName ) {
+					logErr( `The translation of "${messageName}" is blank.` );
 				} );
 			}
 		}
@@ -305,8 +306,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if ( count > 0 ) {
 				ok = false;
 				logErr( `The "${index}" translation has ${count} duplicate translation${( count > 1 ? 's' : '' )}:` );
-				translatedData[ index ].duplicate.forEach( function ( message ) {
-					logErr( `The translation of "${message}" duplicates the primary message.` );
+				translatedData[ index ].duplicate.forEach( function ( messageName ) {
+					logErr( `The translation of "${messageName}" duplicates the primary message.` );
 				} );
 			}
 		}
@@ -316,8 +317,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if ( count > 0 ) {
 				ok = false;
 				logErr( `The "${index}" translation has ${count} unused translation${( count > 1 ? 's' : '' )}:` );
-				translatedData[ index ].unused.forEach( function ( message ) {
-					logErr( `The translation of "${message}" is unused.` );
+				translatedData[ index ].unused.forEach( function ( messageName ) {
+					logErr( `The translation of "${messageName}" is unused.` );
 				} );
 			}
 		}
@@ -327,7 +328,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if ( count > 0 ) {
 				ok = false;
 				logErr( `The "${index}" translation has ${count} message${( count > 1 ? 's' : '' )} which fail${( count > 1 ? 's' : '' )} to use all parameters:` );
-				// eslint-disable-next-line no-loop-func
+
 				translatedData[ index ].unusedParameters.forEach( function ( report ) {
 					switch ( report.stack.length ) {
 						case 1:
@@ -349,7 +350,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			if (
 				// eslint-disable-next-line no-prototype-builtins
 				!translatedData.hasOwnProperty( index ) ||
-				( options.requireCompleteTranslationLanguages.indexOf( index ) === -1 )
+				( !options.requireCompleteTranslationLanguages.includes( index ) )
 			) {
 				continue;
 			}
@@ -359,8 +360,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 				ok = false;
 				logErr( `The "${index}" translation has ${count} missing translation${( count > 1 ? 's' : '' )}:` );
 
-				translatedData[ index ].missing.forEach( function ( message ) {
-					logErr( `The translation of "${message}" is missing.` );
+				translatedData[ index ].missing.forEach( function ( messageName ) {
+					logErr( `The translation of "${messageName}" is missing.` );
 				} );
 			}
 		}
@@ -395,8 +396,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 				ok = false;
 				logErr( `The "${index}" translation is missing ${count} required message{( count > 1 ? 's' : '' )}:` );
 
-				translatedData[ index ].missing.forEach( function ( message ) {
-					logErr( `The required message "${message}" is missing.` );
+				translatedData[ index ].missing.forEach( function ( messageName ) {
+					logErr( `The required message "${messageName}" is missing.` );
 				} );
 			}
 		}
