@@ -1,3 +1,5 @@
+'use strict';
+
 // Integration test
 module.exports = function ( grunt ) {
 	grunt.loadTasks( './tasks/' );

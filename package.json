@@ -1,47 +1,47 @@
 {
-  "name": "grunt-banana-checker",
-  "version": "0.9.0",
-  "description": "Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wikimedia/banana-checker.git"
-  },
-  "homepage": "https://github.com/wikimedia/banana-checker",
-  "keywords": [
-    "gruntplugin",
-    "checker",
-    "banana"
-  ],
-  "bin": {
-    "banana-checker": "src/cli.js"
-  },
-  "files": [
-    "src/",
-    "tasks/"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wikimedia/banana-checker/issues"
-  },
-  "main": "src/banana.js",
-  "engines": {
-    "node": ">=8"
-  },
-  "devDependencies": {
-    "eslint-config-wikimedia": "0.15.1",
-    "nyc": "15.0.1",
-    "grunt": "1.1.0"
-  },
-  "scripts": {
-    "test": "nyc node test/test.js && eslint . && grunt banana && ./src/cli.js --requireLowerCase=0 test/simple/ test/requireLowerCase/full/"
-  },
-  "nyc": {
-    "exclude": [
-      "test"
-    ],
-    "reporter": [
-      "text",
-      "html"
-    ]
-  }
+	"name": "grunt-banana-checker",
+	"version": "0.9.0",
+	"description": "Checker for the 'Banana' JSON-file format for interface messages, as used by MediaWiki and jQuery.i18n.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wikimedia/banana-checker.git"
+	},
+	"homepage": "https://github.com/wikimedia/banana-checker",
+	"keywords": [
+		"gruntplugin",
+		"checker",
+		"banana"
+	],
+	"bin": {
+		"banana-checker": "src/cli.js"
+	},
+	"files": [
+		"src/",
+		"tasks/"
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/wikimedia/banana-checker/issues"
+	},
+	"main": "src/banana.js",
+	"engines": {
+		"node": ">=8"
+	},
+	"devDependencies": {
+		"eslint-config-wikimedia": "0.22.1",
+		"nyc": "15.1.0",
+		"grunt": "1.5.3"
+	},
+	"scripts": {
+		"test": "nyc node test/test.js && eslint --cache . && grunt banana && ./src/cli.js --requireLowerCase=0 test/simple/ test/requireLowerCase/full/"
+	},
+	"nyc": {
+		"exclude": [
+			"test"
+		],
+		"reporter": [
+			"text",
+			"html"
+		]
+	}
 }
