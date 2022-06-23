@@ -35,10 +35,6 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		skipIncompleteMessageDocumentation: []
 	}, options );
 
-	let message;
-	let index;
-	let offset;
-
 	const jsonFilenameRegex = /(.*)\.json$/;
 	const translatedData = {};
 	const documentationMessageBlanks = [];
@@ -108,8 +104,8 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		let missing = sourceMessageKeys.slice( 0 );
 		let stack, originalParameters;
 
-		for ( index in keys ) {
-			message = keys[ index ];
+		for ( const index in keys ) {
+			const message = keys[ index ];
 			if ( sourceMessages[ message ] === undefined ) {
 				// An unused translation. This happens on commits that remove messages,
 				// which are typically removed from en.json and qqq.json, letting
@@ -129,7 +125,6 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 			}
 
 			if ( originalParameters ) {
-				// eslint-disable-next-line no-loop-func
 				stack = originalParameters.filter( function ( originalParameter ) {
 					return !languageMessages[ message ].includes( originalParameter );
 				} );
@@ -186,9 +181,9 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 	}
 
 	while ( sourceMessageKeys.length > 0 ) {
-		message = sourceMessageKeys[ 0 ];
+		const message = sourceMessageKeys[ 0 ];
 
-		offset = documentationMessageKeys.indexOf( message );
+		const offset = documentationMessageKeys.indexOf( message );
 
 		if ( offset !== -1 ) {
 
@@ -284,7 +279,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		}
 	}
 
-	for ( index in translatedData ) {
+	for ( const index in translatedData ) {
 		// eslint-disable-next-line no-prototype-builtins
 		if ( !translatedData.hasOwnProperty( index ) ) {
 			continue;
@@ -346,7 +341,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 	}
 
 	if ( options.requireCompleteTranslationLanguages.length ) {
-		for ( index in translatedData ) {
+		for ( const index in translatedData ) {
 			if (
 				// eslint-disable-next-line no-prototype-builtins
 				!translatedData.hasOwnProperty( index ) ||
@@ -368,13 +363,13 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 	}
 
 	if ( options.requireCompleteTranslationMessages.length ) {
-		for ( index in translatedData ) {
+		for ( const index in translatedData ) {
 			// eslint-disable-next-line no-prototype-builtins
 			if ( !translatedData.hasOwnProperty( index ) ) {
 				continue;
 			}
 
-			for ( message in translatedData[ index ].missing ) {
+			for ( const message in translatedData[ index ].missing ) {
 				if (
 					// eslint-disable-next-line no-prototype-builtins
 					!translatedData[ index ].missing.hasOwnProperty( sourceMessageKeys[ message ] )
@@ -382,7 +377,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 					continue;
 				}
 
-				offset = options.requireCompleteTranslationMessages.indexOf(
+				const offset = options.requireCompleteTranslationMessages.indexOf(
 					sourceMessageKeys[ message ]
 				);
 
