@@ -10,7 +10,7 @@ console.log( 'test: simple' );
 	const result = bananaChecker(
 		'test/simple',
 		{},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -23,7 +23,7 @@ console.log( 'test: declare files explicitly' );
 			sourceFile: 'en.json',
 			documentationFile: 'qqq.json'
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -36,7 +36,7 @@ console.log( 'test: custom file names' );
 			sourceFile: 'messages.json',
 			documentationFile: 'documentation.json'
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -51,7 +51,7 @@ console.log( 'test: files not found' );
 					sourceFile: 'messages.json',
 					documentationFile: 'documentation.json'
 				},
-				function () {}
+				() => {}
 			);
 		},
 		/Cannot find/
@@ -66,7 +66,7 @@ console.log( 'test: disallowEmptyDocumentation' );
 			{
 				disallowEmptyDocumentation: true
 			},
-			function ( err ) { errs.push( err ); }
+			( err ) => { errs.push( err ); }
 		);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
@@ -82,7 +82,7 @@ console.log( 'test: disallowEmptyDocumentation (disabled)' );
 		{
 			disallowEmptyDocumentation: false
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -95,7 +95,7 @@ console.log( 'test: disallowUnusedDocumentation' );
 			{
 				disallowUnusedDocumentation: true
 			},
-			function ( err ) { errs.push( err ); }
+			( err ) => { errs.push( err ); }
 		);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
@@ -111,7 +111,7 @@ console.log( 'test: disallowUnusedDocumentation (disabled)' );
 		{
 			disallowUnusedDocumentation: false
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -124,7 +124,7 @@ console.log( 'test: requireCompletelyUsedParameters' );
 			{
 				requireCompletelyUsedParameters: true
 			},
-			function ( err ) { errs.push( err ); }
+			( err ) => { errs.push( err ); }
 		);
 
 	assert.strictEqual( result, FAIL );
@@ -146,7 +146,7 @@ console.log( 'test: requireCompleteMessageDocumentation' );
 			{
 				requireCompleteMessageDocumentation: true
 			},
-			function ( err ) { errs.push( err ); }
+			( err ) => { errs.push( err ); }
 		);
 	assert.strictEqual( result, FAIL );
 	assert.deepStrictEqual( errs, [
@@ -162,7 +162,7 @@ console.log( 'test: requireCompleteMessageDocumentation (disabled)' );
 		{
 			requireCompleteMessageDocumentation: false
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -174,7 +174,7 @@ console.log( 'test: requireMetadata' );
 		{
 			requireMetadata: true
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, FAIL );
 }
@@ -186,7 +186,7 @@ console.log( 'test: requireMetadata (disabled)' );
 		{
 			requireMetadata: false
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -201,7 +201,7 @@ console.log( 'test: skipIncompleteMessageDocumentation' );
 				'fourth-message-key'
 			]
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -213,7 +213,7 @@ console.log( 'test: requireLowerCase' );
 		{
 			requireLowerCase: true
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, FAIL );
 }
@@ -226,7 +226,7 @@ console.log( 'test: requireLowerCase (disabled)' );
 		{
 			requireLowerCase: false
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -239,7 +239,7 @@ console.log( 'test: requireLowerCase=initial' );
 		{
 			requireLowerCase: 'initial'
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -251,7 +251,7 @@ console.log( 'test: requireKeyPrefix (string, correct)' );
 		{
 			requireKeyPrefix: 'alice'
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -263,7 +263,7 @@ console.log( 'test: requireKeyPrefix (string, wrong)' );
 		{
 			requireKeyPrefix: 'bob'
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, FAIL );
 }
@@ -275,7 +275,7 @@ console.log( 'test: requireKeyPrefix (array/single, correct)' );
 		{
 			requireKeyPrefix: [ 'alice' ]
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -287,7 +287,7 @@ console.log( 'test: requireKeyPrefix (array/multiple, correct)' );
 		{
 			requireKeyPrefix: [ 'alice', 'bob', 'timmy' ]
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -299,7 +299,7 @@ console.log( 'test: allowLeadingWhitespace (enabled)' );
 		{
 			allowLeadingWhitespace: true
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -312,7 +312,7 @@ console.log( 'test: allowLeadingWhitespace (disabled)' );
 			{
 				allowLeadingWhitespace: false
 			},
-			function ( err ) { errs.push( err ); }
+			( err ) => { errs.push( err ); }
 		);
 
 	assert.strictEqual( result, FAIL );
@@ -343,7 +343,7 @@ console.log( 'test: allowTrailingWhitespace (enabled)' );
 		{
 			allowTrailingWhitespace: true
 		},
-		function () {}
+		() => {}
 	);
 	assert.strictEqual( result, PASS );
 }
@@ -356,7 +356,7 @@ console.log( 'test: allowTrailingWhitespace (disabled)' );
 			{
 				allowTrailingWhitespace: false
 			},
-			function ( err ) { errs.push( err ); }
+			( err ) => { errs.push( err ); }
 		);
 
 	assert.strictEqual( result, FAIL );
