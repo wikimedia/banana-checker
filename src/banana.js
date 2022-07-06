@@ -87,7 +87,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		return (
 			value !== options.sourceFile &&
 			value !== options.documentationFile &&
-			value.match( jsonFilenameRegex )
+			jsonFilenameRegex.test( value )
 		);
 	} );
 
