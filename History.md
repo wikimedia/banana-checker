@@ -1,3 +1,14 @@
+v0.10.0 / 2022-07-06
+==================
+
+* Add new allowLeadingWhitespace and allowTrailingWhitespace flags (James D. Forrester)
+* build: Create scoped variables in loops instead of re-using (Ed Sanders)
+* build: Drop testing in Node 8, 10; add in 14, 16 (James D. Forrester)
+* build: Modernise to eslint-config-wikimedia 0.22.1 etc. (James D. Forrester)
+* build: Update URLs in package.json after repo rename (Kunal Mehta)
+* code: Don't use .match() for boolean checking, use .test() (James D. Forrester)
+* code: Use arrow functions in most places (Ed Sanders)
+
 v0.9.0 / 2020-04-06
 ==================
 
