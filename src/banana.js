@@ -36,7 +36,7 @@ module.exports = function bananaChecker( dir, options, logErr ) {
 		requireMetadata: true,
 
 		allowLeadingWhitespace: true,
-		allowTrailingWhitespace: true,
+		allowTrailingWhitespace: false,
 
 		skipIncompleteMessageDocumentation: []
 	}, options );

@@ -219,6 +219,6 @@ Whether to ignore leading whitespace in original or translated messages.
 
 ### allowTrailingWhitespace
 Type: `boolean`
-Default value: `true`
+Default value: `false`
 
 Whether to ignore trailing whitespace in original or translated messages.

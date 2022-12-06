@@ -22,7 +22,6 @@ for ( const param of params ) {
 		case 'disallowBlankTranslations':
 		case 'disallowUnusedDocumentation':
 		case 'allowLeadingWhitespace':
-		case 'allowTrailingWhitespace':
 		case 'ignoreMissingBlankTranslations':
 		case 'requireCompleteMessageDocumentation':
 		case 'requireLowerCase':
@@ -40,6 +39,7 @@ for ( const param of params ) {
 		case 'disallowDuplicateTranslations':
 		case 'disallowUnusedTranslations':
 		case 'requireCompletelyUsedParameters':
+		case 'allowTrailingWhitespace':
 			if ( value === '1' || value === 'true' ) {
 				options[ key ] = true;
 			} else if ( value === undefined || value === '0' || value === 'false' ) {
