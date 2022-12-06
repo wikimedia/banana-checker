@@ -18,11 +18,9 @@ for ( const param of params ) {
 			options[ key ] = value;
 			break;
 
-		// Boolean option
+		// Boolean option, default-true
 		case 'disallowBlankTranslations':
-		case 'disallowDuplicateTranslations':
 		case 'disallowUnusedDocumentation':
-		case 'disallowUnusedTranslations':
 		case 'allowLeadingWhitespace':
 		case 'allowTrailingWhitespace':
 		case 'ignoreMissingBlankTranslations':
@@ -32,6 +30,19 @@ for ( const param of params ) {
 			if ( value === undefined || value === '1' || value === 'true' ) {
 				options[ key ] = true;
 			} else if ( value === '0' || value === 'false' ) {
+				options[ key ] = false;
+			} else {
+				console.error( `banana-check: Invalid option ignored, --${key}=${value}` );
+			}
+			break;
+
+		// Boolean option, default-false
+		case 'disallowDuplicateTranslations':
+		case 'disallowUnusedTranslations':
+		case 'requireCompletelyUsedParameters':
+			if ( value === '1' || value === 'true' ) {
+				options[ key ] = true;
+			} else if ( value === undefined || value === '0' || value === 'false' ) {
 				options[ key ] = false;
 			} else {
 				console.error( `banana-check: Invalid option ignored, --${key}=${value}` );
