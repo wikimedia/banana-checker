@@ -1,4 +1,12 @@
 {
 	"root": true,
-	"extends": "wikimedia/server"
+	"extends": "wikimedia/server",
+	"overrides": [
+		{
+			"files": "src/cli.js",
+			"rules": {
+				"es-x/no-hashbang": "off"
+			}
+		}
+	]
 }
